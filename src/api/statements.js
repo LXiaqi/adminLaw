@@ -15,3 +15,40 @@ export async function DelStatements(that) {
         return res;
     }
 }
+// 添加
+export async function AddStatements(that) {
+    let data = {
+        Contents:that.language.Contents,
+        UseStatuz:that.language.UseStatuz,
+        Types:that.language.Types,
+    }
+    const res = await that.$http.post('/Greetings/Add',data);
+    if(res.success == false) {
+        that.$message.error(res.data.msg);
+    }else {
+        that.$message({
+            message: res.msg,
+            type: 'success'
+          });
+        return res;
+    }
+}
+// 编辑
+export async function EditStatements(that) {
+    let data = {
+        Id:that.language.Id,
+        Contents:that.language.Contents,
+        UseStatuz:that.language.UseStatuz,
+        Types:that.language.Types,
+    }
+    const res = await that.$http.post('/Greetings/Update',data);
+    if(res.success == false) {
+        that.$message.error(res.data.msg);
+    }else {
+        that.$message({
+            message: res.msg,
+            type: 'success'
+          });
+        return res;
+    }
+}

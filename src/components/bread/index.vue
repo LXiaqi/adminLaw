@@ -11,20 +11,26 @@
 
 <script>
 export default {
+  
     name: 'bread',
     data() {
         return {
-
+            breadList:[]
         }
     },
-    created() {
 
+    created() {
+        this.getBreadcrumb();
     },
     mounted() {
 
     },
     methods: {
-
+        getBreadcrumb() {
+            console.log(this.information);
+            // let matched = this.$route.matched.filter(item => item.name)
+            //  console.log(matched);
+        }
     }
 }
 </script>

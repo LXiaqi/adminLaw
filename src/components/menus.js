@@ -10,6 +10,14 @@ const menus = [
     ]
   },
   {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},
-  
+  {
+    id: 'chatadmin',
+    icon: 'fa fa-circle-o',
+    label: '聊天管理',
+    submenu: [
+      {id: 'record', name: 'record', label: '聊天记录'},
+      {id: 'details', name: 'details', label: '接待详情'},
+    ]
+  },
 ]
 export default menus
