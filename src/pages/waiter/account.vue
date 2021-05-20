@@ -97,6 +97,7 @@ export default {
       },
       // 查找
       search() {
+        this.listQuery.page = 1;
         this.info();
       },
       // 重置

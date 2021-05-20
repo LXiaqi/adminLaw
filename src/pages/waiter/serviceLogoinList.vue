@@ -20,7 +20,7 @@
         <el-table-column prop="OnlineLength" label="在线时长" ></el-table-column>
         <el-table-column prop="ShowBusyLength" label="示忙时长" ></el-table-column>
         <el-table-column prop="OtherLength" label="其它时长" ></el-table-column>
-        <el-table-column prop="OtherLength" label="响应时长" ></el-table-column>
+        <el-table-column prop="AverageResponseTime" label="平均响应时长" ></el-table-column>
         <el-table-column prop="TodayTime" label="日期" ></el-table-column>
       </el-table>
       <pagination v-show="listQuery.total > 10" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="info()"/>
@@ -68,6 +68,7 @@ export default {
       },
       // 查找
       search() {
+          this.listQuery.page = 1;
           if(this.time[0] != '' && this.time[1] != '') {
             this.time[0] = untilsTime.formateDate(this.time[0].getTime());
             this.time[1] = untilsTime.formateDate(this.time[1].getTime());

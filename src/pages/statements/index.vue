@@ -142,6 +142,7 @@ export default {
       },
       // 查找
       search() {
+          this.listQuery.page = 1;
           this.info();
       },
       // 重置
@@ -175,11 +176,13 @@ export default {
           AddStatements(this).then(res => {
             this.language = {},
             this.dialogType = false;
+            this.info();
           })
         }else {
           EditStatements(this).then(res => {
             this.language = {},
             this.dialogType = false;
+            this.info();
           })
         }
       
