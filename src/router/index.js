@@ -22,6 +22,7 @@ export default new Router({
         {path: '/statements', name: 'statements', component: page('statements')},
         {path: '/record', name: 'record', component: page('chatadmin/record')},
         {path: '/details', name: 'details', component: page('chatadmin/details')},
+        {path: '/label', name: 'label', component: page('label')},
       ]
     },
     {path: '/login', name: 'login', component: page('login')},

@@ -62,6 +62,10 @@ export default {
       // 客服列表的请求和渲染
       info() {
           serviceLogoinList(this).then(res => {
+            for(let i = 0; i < res.data.length;i++){
+              res.data[i].LoginTime =  untilsTime.FormatToDate(res.data[i].LoginTime);
+              res.data[i].OutTime =  untilsTime.FormatToDate(res.data[i].OutTime);
+            }
               this.accountData = res.data;
               this.listQuery.total = res.recordsTotal
           })
