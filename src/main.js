@@ -65,7 +65,10 @@ Axios.interceptors.request.use(config => {
 
 // 接口错误拦截
 Axios.interceptors.response.use(res => {
-  // console.log(res)
+  if(res.data.result == 9) {
+    app.$router.replace("/login");
+  }
+ 
   if (res.status === 401) {
     app && app.$message({
       type: 'warning',

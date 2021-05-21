@@ -18,11 +18,12 @@ export default new Router({
       children: [
         {path: '/', name: 'home', component: Home,},
         {path: '/account', name: 'account', component: page('waiter/account'),meta:{title:'客服账号'}},
-        {path: '/serviceLogoinList', name: 'serviceLogoinList', component: page('waiter/serviceLogoinList'),meta:{title:'客服账号'}},
-        {path: '/statements', name: 'statements', component: page('statements')},
-        {path: '/record', name: 'record', component: page('chatadmin/record')},
-        {path: '/details', name: 'details', component: page('chatadmin/details')},
-        {path: '/label', name: 'label', component: page('label')},
+        {path: '/serviceLogoinList', name: 'serviceLogoinList', component: page('waiter/serviceLogoinList'),meta:{title:'客服坐席'}},
+        {path: '/statements', name: 'statements', component: page('statements'),meta:{title:'语句管理'}},
+        {path: '/record', name: 'record', component: page('chatadmin/record'),meta:{title:'聊天记录'}},
+        {path: '/details', name: 'details', component: page('chatadmin/details'),meta:{title:'接待详情'}},
+        {path: '/label', name: 'label', component: page('label'),meta:{title:'标签管理'}},
+        {path: '/leaveMsg', name: 'leaveMsg', component: page('leaveMsg'),meta:{title:'留言管理'}},
       ]
     },
     {path: '/login', name: 'login', component: page('login')},

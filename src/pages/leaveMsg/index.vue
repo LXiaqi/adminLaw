@@ -1,0 +1,169 @@
+<template>
+  <div>
+    <bread></bread>
+    <div class="content">
+      <!-- 头部信息 -->
+      <div class="searchbox">
+        <el-input class="search_ipt" v-model="phone" placeholder="手机号"></el-input>
+        <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+    </el-date-picker>
+        <el-button type="primary" size="medium" @click="search()">查找</el-button>
+        <el-button size="medium" @click="reset()">重置</el-button>
+        <el-button type="success" size="medium" @click="Exportist()">导出</el-button>
+      </div>
+      <!-- 表格数据 -->
+      <el-table :data="accountData" style="width: 100%">
+        <el-table-column prop="OrderCode" label="订单号" ></el-table-column>
+        <el-table-column label="内容" >
+             <template slot-scope="scope">
+                <span class="red">{{scope.row.Msg}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column prop="Remarks" label="补充说明" ></el-table-column>
+        <el-table-column label="用户名">
+            <template slot-scope="scope">
+                <span>{{scope.row.CustomerInfo.CustomerName}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="手机号">
+            <template slot-scope="scope">
+                <span>{{scope.row.CustomerInfo.Phone}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="接待人">
+            <template slot-scope="scope">
+                <span>{{scope.row.UserInfo.UserName}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column  label="状态" >
+             <template slot-scope="scope">
+                <span :class="scope.row.Statuz == 0 ? 'red' : 'green' ">{{scope.row.state}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column prop="CreateTime" label="时间" ></el-table-column>
+        <el-table-column label="处理">
+            <template slot-scope="scope">
+                <el-button type="warning" size="mini" @click="dispose(scope.row.Id)">处理</el-button>
+            </template>
+        </el-table-column>
+      </el-table>
+      <pagination v-show="listQuery.total > 10" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="info()"/>
+    </div>
+    <!-- 留言处理模态框 -->
+    <el-dialog  title="处理" :visible.sync="dialogType">
+      <el-form >
+        <el-form-item label="回复:" label-width="90px">
+             <el-input v-model="Explain" autocomplete="off" placeholder="输入回复内容" class="user_ipt" type="textarea" rows="3"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogType = false">取 消</el-button>
+        <el-button type="primary" @click="submit()">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { LeaveMsgList,reply} from "@/api/leaveMsg";
+import Pagination from "@/components/Pagination";
+import bread from "@/components/bread";
+import untilsTime from "@/utils/Datetime";
+export default {
+  props: [],
+  components: {
+    Pagination,bread
+  },
+  data() {
+    return {
+        accountData: [], // 客服列表
+        listQuery: {
+            page: 1, // 当前页码
+            limit: 10, // 表格一页的数量
+            searchStatus: false,
+            total: 0, // 总条数
+        },
+        phone:'',
+        time:['',''],// 开始时间和结束时间的数组
+        dialogType:false, // 模态框状态
+        Explain:'', // 回复内容
+        replyid:'', // 回复id
+    };
+  },
+  created() {
+    this.info();    
+  },
+  mounted() {
+
+  },
+  methods: {
+      // 客服列表的请求和渲染
+      info() {
+          LeaveMsgList(this).then(res => {
+            for(let i = 0; i < res.data.length;i++){
+              res.data[i].CreateTime =  untilsTime.FormatToDate(res.data[i].CreateTime);
+              if(res.data[i].Statuz == 0) {
+                  res.data[i].state = '未处理';
+              }else {
+                  res.data[i].state = '已处理';
+              }
+            }
+              this.accountData = res.data;
+              this.listQuery.total = res.recordsTotal
+          })
+      },
+      // 查找
+      search() {
+          this.listQuery.page = 1;
+          if(this.time[0] != '' && this.time[1] != '') {
+            this.time[0] = untilsTime.formateDate(this.time[0].getTime());
+            this.time[1] = untilsTime.formateDate(this.time[1].getTime());
+          }
+          this.info();
+      },
+      // 重置
+      reset() {
+        this.phone = '';
+        this.time = ['',''];
+        this.info();
+      },
+      // 导出
+      Exportist() {
+        window.location.href = '/MessageOrder/ExportMsgOrder?phone='+this.phone+'&startTime='+this.time[0]+'&endTime='+this.time[1];
+      },
+      // 处理
+      dispose(id) {
+          this.replyid = id;
+          this.dialogType = true;
+      },
+      //提交
+      submit() {
+          reply(this).then(res => {
+            this.dialogType = false;
+            this.info();
+          })
+      }
+  },
+};
+</script>
+
+<style scoped >
+.content {
+  margin: 20px;
+}
+.searchbox {
+  margin: 10px;
+}
+.search_ipt {
+  width: 200px;
+}
+.red {
+    color: red;
+}
+.green {
+    color: green;
+}
+.user_ipt {
+    width: 580px;
+}
+</style>

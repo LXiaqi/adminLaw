@@ -2,6 +2,8 @@ const menus = [
   // {id: 'home', label: '首页', path: '/', icon: 'fa fa-dashboard'},
   {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},
   {id: 'label', label: '标签管理', path: '/label', icon: 'fa fa-dashboard'},
+  {id: 'leaveMsg', label: '留言管理', path: '/leaveMsg', icon: 'fa fa-dashboard'},
+
   {
     id: 'waiter',
     icon: 'fa fa-circle-o',

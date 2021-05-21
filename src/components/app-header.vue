@@ -15,14 +15,14 @@
     <m-nav-item padding="0">
       <m-dropdown align="right" v-if="user" padding="0 10px">
         <a href="#" style="display: inline-block; padding: 0px; color: inherit">
-          <img src="../assets/user.jpg" alt="" style="border-radius: 3px;vertical-align: middle;">
+          <!-- <img src="../assets/user.jpg" alt="" style="border-radius: 3px;vertical-align: middle;"> -->
           <span>{{user.username}}</span> 
           <span class="caret"></span>
         </a>
         <m-dropdown-panel>
-          <m-dropdown-item>用户信息</m-dropdown-item>
-          <m-dropdown-item >修改密码</m-dropdown-item>
-          <m-dropdown-item disabled>注销</m-dropdown-item>
+          <!-- <m-dropdown-item>用户信息</m-dropdown-item> -->
+          <!-- <m-dropdown-item >修改密码</m-dropdown-item> -->
+          <!-- <m-dropdown-item disabled>注销</m-dropdown-item> -->
           <div class="test-line"></div>
           <m-dropdown-item name="login">退出账号</m-dropdown-item>
         </m-dropdown-panel>

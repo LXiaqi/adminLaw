@@ -13,7 +13,7 @@
       :style="{height: headerHeight + 'px', color: theme.theme.activeTextColor}"
       >
       <img src="../assets/logo.png" alt="" class="header-logo">
-      <span class="header-logo-text" >法保网</span>
+      <span class="header-logo-text" ></span>
     </div>
     <app-side :collapse="isCollapse" :theme="theme.theme"></app-side>
   </el-aside>
@@ -109,8 +109,9 @@ export default {
     white-space: nowrap;
   }
   .app-header-logo-box .header-logo{
-    height: 42px;
-    margin-top: -17px;
+    width: 135px;
+    height: 35px;
+    margin-top: -10px;
     margin-right: 5px;
     vertical-align: middle;
   }

@@ -48,7 +48,7 @@ export default {
         password: this.password
       }).then(res => {
         adminLogin(that).then(res => {
-          this.$router.push({name: 'home'})
+          this.$router.push({name: 'statements'})
         })
         this.isLoging = false
       })
