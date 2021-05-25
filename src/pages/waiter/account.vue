@@ -12,6 +12,12 @@
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
         <el-table-column prop="UserName" label="账号" ></el-table-column>
+        <el-table-column  label="头像" >
+            <template slot-scope="scope">
+              <el-image class="img"  :src="scope.row.HeadImg" alt="" :preview-src-list="[scope.row.HeadImg]"></el-image>
+            </template>
+        </el-table-column>
+
         <el-table-column prop="Age" label="年龄" ></el-table-column>
         <el-table-column label="性别">
             <template slot-scope="scope">
@@ -31,6 +37,16 @@
     <!-- 添加和编辑的模态框 -->
     <el-dialog  :title="dialogTitle" :visible.sync="dialogType">
       <el-form :model="userinfo">
+        <el-form-item label="账号" label-width="90px">
+          <el-upload
+            class="avatar-uploader"
+            action="/Communication/UploadFiles"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess">
+            <img v-if="userinfo.HeadImg" :src="userinfo.HeadImg" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="账号" label-width="90px">
           <el-input v-model="userinfo.UserName" autocomplete="off" placeholder="账号" class="user_ipt"></el-input>
         </el-form-item>
@@ -114,6 +130,7 @@ export default {
       },
       // 添加
       add() {
+        this.userinfo = {};
         this.dialogType = true;
         this.dialogTitle = '添加客服账号'
       },
@@ -139,6 +156,11 @@ export default {
         this.dialogType = true;
         this.dialogTitle = '编辑账户'
         this.userinfo = user;
+      },
+      // 头像上传
+      handleAvatarSuccess(res) {
+        console.log(res.data);
+        this.userinfo.HeadImg = 'https://files.365lawhelp.com/'+res.data;
       }
   },
 };
@@ -157,4 +179,31 @@ export default {
 .user_ipt {
   width: 220px;
 }
+ .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 78px;
+    height: 78px;
+    line-height: 78px;
+    text-align: center;
+  }
+  .avatar {
+    width: 78px;
+    height: 78px;
+    display: block;
+  }
+  .img {
+    width: 50px;
+    height: 50px;
+  }
 </style>

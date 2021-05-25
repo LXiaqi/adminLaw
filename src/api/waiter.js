@@ -24,6 +24,7 @@ export async function Addaccount(that) {
         Sex:that.userinfo.Sex,
         Age:that.userinfo.Age,
         Type:1,
+        HeadImg:that.userinfo.HeadImg
     }
     const res = await that.$http.post('/UserInfo/Add',data);
     if(res.success == false) {
@@ -45,6 +46,7 @@ export async function Editaccount(that) {
         Sex:that.userinfo.Sex,
         Age:that.userinfo.Age,
         Type:1,
+        HeadImg:that.userinfo.HeadImg
     }
     const res = await that.$http.post('/UserInfo/Update',data);
     if(res.success == false) {

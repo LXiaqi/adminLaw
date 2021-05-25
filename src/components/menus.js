@@ -1,5 +1,14 @@
 const menus = [
-  // {id: 'home', label: '首页', path: '/', icon: 'fa fa-dashboard'},
+  // {id: 'home', label: '在线客服', path: '/', icon: 'fa fa-dashboard'},
+  {
+    id: 'chat',
+    icon: 'fa fa-circle-o',
+    label: '在线客服',
+    submenu: [
+      {id: 'now', name: 'now', label: '在线客服'},
+      {id: 'history', name: 'history', label: '历史会话'},
+    ]
+  },
   {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},
   {id: 'label', label: '标签管理', path: '/label', icon: 'fa fa-dashboard'},
   {id: 'leaveMsg', label: '留言管理', path: '/leaveMsg', icon: 'fa fa-dashboard'},
@@ -22,5 +31,6 @@ const menus = [
       {id: 'details', name: 'details', label: '接待详情'},
     ]
   },
+ 
 ]
 export default menus

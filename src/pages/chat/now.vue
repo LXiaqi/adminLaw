@@ -10,7 +10,7 @@ export default {
 </script>
 <style type="text/css">
  .chat_iframe {
-     width: 1860px;
-     height: 852px;
+     width: 100%;
+     height: 93vh;
  }
 </style>

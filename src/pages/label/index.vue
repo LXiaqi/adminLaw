@@ -97,6 +97,8 @@ export default {
       },
       // 添加
       add() {
+         this.name = ''; // 添加的标签名
+         this.value = ''; 
           this.dialogTitle ='添加';
           this.dialogType = true;
           TwoLabelTree(this).then(res => {

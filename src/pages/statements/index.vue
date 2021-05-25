@@ -20,7 +20,7 @@
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
         <el-table-column prop="Contents" label="内容" ></el-table-column>
-        <el-table-column prop="Types" label="类型" ></el-table-column>
+        <el-table-column prop="styleType" label="类型" ></el-table-column>
         <el-table-column label="状态">
             <template slot-scope="scope">
                 <span>{{scope.row.UseStatuz == 0 ? '未使用' : '使用中'}}</span> 
@@ -121,16 +121,16 @@ export default {
               for(let i = 0; i < res.data.length; i++){
                   switch(res.data[i].Types){
                     case 0:
-                    res.data[i].Types = '问候语';
+                    res.data[i].styleType = '问候语';
                     break;
                     case 1:
-                    res.data[i].Types = '企业快捷语';
+                    res.data[i].styleType = '企业快捷语';
                     break;
                     case 2:
-                    res.data[i].Types = '个人快捷语 ';
+                    res.data[i].styleType = '个人快捷语 ';
                     break;  
                     case 3:
-                    res.data[i].Types = '自动回复';
+                    res.data[i].styleType = '自动回复';
                     break;  
                     default:
                     break;  
@@ -161,6 +161,7 @@ export default {
       },
       // 添加
       add() {
+        this.language = {};
         this.dialogType = true;
         this.dialogTitle = '添加'
       },

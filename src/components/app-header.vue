@@ -9,9 +9,8 @@
       @click="handleSwitchSide"
       ></i>
   </m-navbar-brand>
-
+ 
   <m-nav align="right">
-  
     <m-nav-item padding="0">
       <m-dropdown align="right" v-if="user" padding="0 10px">
         <a href="#" style="display: inline-block; padding: 0px; color: inherit">
@@ -110,4 +109,13 @@ export default {
   .side-switch:hover{
     color: #fff;
   }
+  .tabs_navs {
+    display: inline-block;
+ 
+    height: 50px;
+  }
+  .tabs_pane {
+    color: #fff;
+  }
+ 
 </style>

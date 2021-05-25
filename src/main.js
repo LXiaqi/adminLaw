@@ -65,7 +65,7 @@ Axios.interceptors.request.use(config => {
 
 // 接口错误拦截
 Axios.interceptors.response.use(res => {
-  if(res.data.result == 9) {
+  if(res.data.result == 7) {
     app.$router.replace("/login");
   }
  

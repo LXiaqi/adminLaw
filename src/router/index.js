@@ -24,6 +24,9 @@ export default new Router({
         {path: '/details', name: 'details', component: page('chatadmin/details'),meta:{title:'接待详情'}},
         {path: '/label', name: 'label', component: page('label'),meta:{title:'标签管理'}},
         {path: '/leaveMsg', name: 'leaveMsg', component: page('leaveMsg'),meta:{title:'留言管理'}},
+        {path: '/now', name: 'now', component: page('chat/now'),meta:{title:'在线客服'}},
+        {path: '/history', name: 'history', component: page('chat/history'),meta:{title:'历史会话'}},
+
       ]
     },
     {path: '/login', name: 'login', component: page('login')},
