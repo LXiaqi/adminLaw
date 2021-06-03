@@ -5,7 +5,7 @@ export async function LeaveMsgList(that) {
 }
 // 留言处理
 export async function reply(that) {
-    const res = await that.$http.get('/DealMsgOrder/Deal?Id='+that.replyid+'&Explain='+that.Explain);
+    const res = await that.$http.get('/MessageOrder/Deal?Id='+that.replyid+'&Explain='+that.Explain);
     if(res.success == false) {
         that.$message.error(res.msg);
     }else {

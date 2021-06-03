@@ -14,12 +14,16 @@
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
         <el-table-column prop="OrderCode" label="订单号" ></el-table-column>
-        <el-table-column label="内容" >
+        <el-table-column prop="Msg" label="问题描述" >
+          
+        </el-table-column>
+        <el-table-column prop="Remarks" label="补充内容" ></el-table-column>
+        <el-table-column label="图片">
              <template slot-scope="scope">
-                <span class="red">{{scope.row.Msg}}</span>
+               <el-image class="img_" v-if="scope.row.Images.length != 0"  :src="scope.row.Images[0]" :preview-src-list="scope.row.Images" alt="" ></el-image>
             </template>
         </el-table-column>
-        <el-table-column prop="Remarks" label="补充说明" ></el-table-column>
+
         <el-table-column label="用户名">
             <template slot-scope="scope">
                 <span>{{scope.row.CustomerInfo.CustomerName}}</span>
@@ -27,7 +31,7 @@
         </el-table-column>
         <el-table-column label="手机号">
             <template slot-scope="scope">
-                <span>{{scope.row.CustomerInfo.Phone}}</span>
+                <span>{{scope.row.Phone}}</span>
             </template>
         </el-table-column>
         <el-table-column label="接待人">
@@ -37,10 +41,13 @@
         </el-table-column>
         <el-table-column  label="状态" >
              <template slot-scope="scope">
-                <span :class="scope.row.Statuz == 0 ? 'red' : 'green' ">{{scope.row.state}}</span>
+                <span >{{scope.row.state}}</span>
             </template>
         </el-table-column>
         <el-table-column prop="CreateTime" label="时间" ></el-table-column>
+        <el-table-column prop="DealTime" label="处理时间" ></el-table-column>
+        <el-table-column prop="Explain" label="处理说明" ></el-table-column>
+
         <el-table-column label="处理">
             <template slot-scope="scope">
                 <el-button type="warning" size="mini" @click="dispose(scope.row.Id)">处理</el-button>
@@ -102,6 +109,9 @@ export default {
           LeaveMsgList(this).then(res => {
             for(let i = 0; i < res.data.length;i++){
               res.data[i].CreateTime =  untilsTime.FormatToDate(res.data[i].CreateTime);
+              if(res.data[i].DealTime != null) {
+                res.data[i].DealTime =  untilsTime.FormatToDate(res.data[i].DealTime);
+              }
               if(res.data[i].Statuz == 0) {
                   res.data[i].state = '未处理';
               }else {
@@ -140,6 +150,7 @@ export default {
       submit() {
           reply(this).then(res => {
             this.dialogType = false;
+            this.Explain = '';
             this.info();
           })
       }
@@ -165,5 +176,9 @@ export default {
 }
 .user_ipt {
     width: 580px;
+}
+.img_ {
+  width: 60px;
+  height: 60px;
 }
 </style>

@@ -12,19 +12,20 @@
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
         <el-table-column prop="UserName" label="账号" ></el-table-column>
+        <el-table-column prop="Nick" label="昵称" ></el-table-column>
         <el-table-column  label="头像" >
             <template slot-scope="scope">
               <el-image class="img"  :src="scope.row.HeadImg" alt="" :preview-src-list="[scope.row.HeadImg]"></el-image>
             </template>
         </el-table-column>
-
+         <el-table-column prop="Phone" label="手机号" ></el-table-column>
+         <el-table-column prop="state" label="状态" ></el-table-column>
         <el-table-column prop="Age" label="年龄" ></el-table-column>
         <el-table-column label="性别">
             <template slot-scope="scope">
                 <span>{{scope.row.Sex == 1 ? '男' : '女'}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="JobNumber" label="工号" ></el-table-column>
         <el-table-column label="操作" >
            <template slot-scope="scope">
                    <el-button type="primary" size="mini" @click="edit(scope.row)">编辑</el-button>
@@ -37,10 +38,10 @@
     <!-- 添加和编辑的模态框 -->
     <el-dialog  :title="dialogTitle" :visible.sync="dialogType">
       <el-form :model="userinfo">
-        <el-form-item label="账号" label-width="90px">
+        <el-form-item label="头像" label-width="90px">
           <el-upload
             class="avatar-uploader"
-            action="/Communication/UploadFiles"
+            action="/BasicData/UploadFiles"
             :show-file-list="false"
             :on-success="handleAvatarSuccess">
             <img v-if="userinfo.HeadImg" :src="userinfo.HeadImg" class="avatar">
@@ -49,6 +50,12 @@
         </el-form-item>
         <el-form-item label="账号" label-width="90px">
           <el-input v-model="userinfo.UserName" autocomplete="off" placeholder="账号" class="user_ipt"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称" label-width="90px">
+          <el-input v-model="userinfo.Nick" autocomplete="off" placeholder="昵称" class="user_ipt"></el-input>
+        </el-form-item>
+         <el-form-item label="手机号" label-width="90px">
+          <el-input v-model="userinfo.Phone" autocomplete="off" placeholder="手机号" class="user_ipt"></el-input>
         </el-form-item>
         <el-form-item label="密码" label-width="90px">
           <el-input placeholder="密码" v-model="userinfo.Pwd" autocomplete="off" show-password class="user_ipt"></el-input>
@@ -64,7 +71,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogType = false">取 消</el-button>
+        <el-button @click="no()">取 消</el-button>
         <el-button type="primary" @click="submitUser()">确 定</el-button>
       </div>
     </el-dialog>
@@ -107,6 +114,27 @@ export default {
       // 客服列表的请求和渲染
       info() {
           accountList(this).then(res => {
+              for(let i = 0; i < res.data.length; i++){
+                switch(res.data[i].Statuz){
+                    case 0:
+                    res.data[i].state = '未登录';
+                    break;
+                    case 1:
+                    res.data[i].state = '在线';
+                    break;
+                    case 2:
+                    res.data[i].state = '示忙 ';
+                    break;  
+                    case 3:
+                    res.data[i].state = '其它';
+                    break;  
+                    case 4:
+                    res.data[i].state = '离线';
+                    break;  
+                    default:
+                    break;  
+                  }
+              }
               this.accountData = res.data;
               this.listQuery.total = res.recordsTotal
           })
@@ -136,6 +164,10 @@ export default {
       },
       // 用户信息提交
       submitUser() {
+        if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.userinfo.Phone))){
+            this.$message.error('手机号码有误请重新输入');
+            return;
+        }
         if( this.dialogTitle == '添加客服账号') {
           Addaccount(this).then(res => {
             this.dialogType = false;
@@ -161,6 +193,10 @@ export default {
       handleAvatarSuccess(res) {
         console.log(res.data);
         this.userinfo.HeadImg = 'https://files.365lawhelp.com/'+res.data;
+      },
+      no() {
+        this.dialogType = false;
+        this.info();
       }
   },
 };

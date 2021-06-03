@@ -24,7 +24,7 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
-import { adminLogin } from "@/api/login";
+import { adminLogin, } from "@/api/login";
 export default {
   name: 'login',
   data () {
@@ -48,7 +48,7 @@ export default {
         password: this.password
       }).then(res => {
         adminLogin(that).then(res => {
-          this.$router.push({name: 'statements'})
+           that.$router.push({name: 'statements'})
         })
         this.isLoging = false
       })

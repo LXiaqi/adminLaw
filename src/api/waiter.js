@@ -23,12 +23,14 @@ export async function Addaccount(that) {
         Pwd:that.userinfo.Pwd,
         Sex:that.userinfo.Sex,
         Age:that.userinfo.Age,
+        Nick:that.userinfo.Nick,
         Type:1,
-        HeadImg:that.userinfo.HeadImg
+        HeadImg:that.userinfo.HeadImg,
+        Phone:that.userinfo.Phone
     }
     const res = await that.$http.post('/UserInfo/Add',data);
     if(res.success == false) {
-        that.$message.error(res.data.msg);
+        that.$message.error(res.msg);
     }else {
         that.$message({
             message: res.msg,
@@ -46,11 +48,13 @@ export async function Editaccount(that) {
         Sex:that.userinfo.Sex,
         Age:that.userinfo.Age,
         Type:1,
-        HeadImg:that.userinfo.HeadImg
+        HeadImg:that.userinfo.HeadImg,
+        Nick:that.userinfo.Nick,
+        Phone:that.userinfo.Phone
     }
     const res = await that.$http.post('/UserInfo/Update',data);
     if(res.success == false) {
-        that.$message.error(res.data.msg);
+        that.$message.error(res.msg);
     }else {
         that.$message({
             message: res.msg,

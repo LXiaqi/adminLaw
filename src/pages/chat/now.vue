@@ -1,6 +1,6 @@
 <template>
 <div class="body">
-<iframe class="chat_iframe" src="http://localhost:8080/#/"></iframe>
+<iframe class="chat_iframe" src="https://online.365lawhelp.com/index.html#/"></iframe>
 </div>
 </template>
 <script type="text/javascript">
@@ -11,6 +11,6 @@ export default {
 <style type="text/css">
  .chat_iframe {
      width: 100%;
-     height: 93vh;
+     height: 100vh;
  }
 </style>

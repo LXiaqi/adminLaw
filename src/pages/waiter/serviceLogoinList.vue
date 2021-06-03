@@ -4,7 +4,7 @@
     <div class="content">
       <!-- 头部信息 -->
       <div class="searchbox">
-        <el-input class="search_ipt" v-model="username" placeholder="账号"></el-input>
+        <el-input class="search_ipt" v-model="username" placeholder="用户名"></el-input>
         <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
     </el-date-picker>
         <el-button type="primary" size="medium" @click="search()">查找</el-button>
