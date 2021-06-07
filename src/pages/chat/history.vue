@@ -226,12 +226,12 @@ export default {
 
 <style scoped>
 .chat_content_pc {
-  height: 100vh;
+
   display: flex;
 }
 .chat_list {
   width: 350px;
-  height: 100vh;
+
   border-right: 1px solid #ebebeb;
 }
 .lable {

@@ -18,7 +18,7 @@
         <el-table-column prop="ToName" label="接收人" ></el-table-column>
         <el-table-column prop="Message" label="消息内容">
             <template slot-scope="scope">
-                  <span class="msg" v-show="!scope.row.img">{{scope.row.Message}}</span>
+                  <span class="msg" v-show="!scope.row.img" v-html="scope.row.Message"></span>
                   <el-image class="img" v-if="scope.row.img" :src="scope.row.Message" alt="" :preview-src-list="[scope.row.Message]"></el-image>
            </template>
         </el-table-column>

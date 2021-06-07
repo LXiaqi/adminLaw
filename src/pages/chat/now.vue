@@ -548,7 +548,7 @@ export default {
     sendOut() {
       this.chat_sendout = this.$refs.msgInputContainer.innerHTML;
       if( this.chat_sendout == '') {
-         that.$message.error('发送消息不能为空！');
+         this.$message.error('发送消息不能为空！');
       }else {
         this.setsendMsg({
         data:{
@@ -594,7 +594,7 @@ export default {
       if (e.ctrlKey && e.keyCode == 13) {
         this.chat_sendout = this.$refs.msgInputContainer.innerHTML;
         if( this.chat_sendout == '') {
-         that.$message.error('发送消息不能为空！');
+         this.$message.error('发送消息不能为空！');
         }else{
             //用户点击了ctrl+enter触发
             this.setsendMsg({
