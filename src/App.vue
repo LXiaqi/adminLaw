@@ -14,7 +14,8 @@ export default {
   data() {
     return {
       custId:'',
-      sendTime:''
+      sendTime:'',
+      myPhoneNum:''
     }
   },
   created() {
@@ -84,6 +85,7 @@ export default {
     SignalRfc() {
       // 获取用户信息
       GetUserData(this).then((res) => {
+        this.myPhoneNum = res.Phone
          this.setUserinfo({
 					data:res
 				})

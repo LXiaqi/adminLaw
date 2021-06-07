@@ -226,6 +226,7 @@ export default {
           time = time.getTime()/1000;
           this.CustName = this.chat_list[i].CustomerName;
             if(new Date().getTime()/1000 - time > 180){
+              this.myPhoneNum = this.getuserinfo.Phone
               dingPush(this).then(res => {
                     console.log(res);
               })
@@ -479,7 +480,6 @@ export default {
         if(res.data.length == 0) {
           this.chat_list = [];
           this.right_type = 0;
-          this.getwaiter();
         }else {
           this.right_type = 1;
           this.chat_list = res.data;
