@@ -1,6 +1,10 @@
 <template>
-
-<v-menu class="side-menu"
+<div>
+  <!-- <div class="now">
+    <i class="el-icon-bell"></i>&nbsp;&nbsp;&nbsp;
+    当前会话
+  </div> -->
+  <v-menu class="side-menu"
   :collapse="collapse"
   :default-active="defaultActive"
   :menus="menus"
@@ -9,8 +13,7 @@
   :text-color="theme.textColor"
   :active-text-color="theme.activeTextColor"
   ></v-menu>
-
-
+</div>
 </template>
 <script type="text/javascript">
 import VMenu from './vmenu'
@@ -39,10 +42,12 @@ export default {
     setCurrentRoute () {
       // console.log(this.$route)
       this.defaultActive = this.$route.name
-    }
+    },
+    
   },
   created () {
-    this.setCurrentRoute()
+    this.setCurrentRoute();
+   
   }
 }
 </script>
@@ -65,4 +70,15 @@ export default {
     position: relative !important;
     z-index: 10 !important;
 }
+/* .now {
+  height: 56px;
+    line-height: 56px;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    white-space: nowrap;
+    list-style: none;
+    padding-left: 20px;
+    color: rgb(224, 224, 224);
+    background-color: rgb(51, 57, 64);
+} */
 </style>

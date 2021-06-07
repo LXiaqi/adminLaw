@@ -21,6 +21,7 @@
         <el-table-column prop="ShowBusyLength" label="示忙时长" ></el-table-column>
         <el-table-column prop="OtherLength" label="其它时长" ></el-table-column>
         <el-table-column prop="AverageResponseTime" label="平均响应时长" ></el-table-column>
+        <el-table-column prop="TimeOutNumber" label="超时次数" ></el-table-column>
         <el-table-column prop="TodayTime" label="日期" ></el-table-column>
       </el-table>
       <pagination v-show="listQuery.total > 10" :total="listQuery.total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="info()"/>

@@ -110,7 +110,7 @@ export default {
     },
      info() {
          GetUserData(this).then(res => {
-           console.log(res);
+          //  console.log(res);
             this.userinfos = res
          }) 
       },

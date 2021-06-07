@@ -5,7 +5,6 @@ import 'babel-polyfill'
 import ElementUI from 'element-ui'
 import Axios from 'axios'
 import NProgress from 'nprogress'
-
 import App from './App'
 import store from './store'
 import router from './router'
@@ -16,12 +15,12 @@ import '@/assets/css/scrollbar.css'
 import '@/assets/css/reset.css'
 import 'nprogress/nprogress.css'
 import 'animate.css'
-
-
+import 'signalr'
 import DropdownPlugin from './m/dropdown'
 import NavbarPlugin from './m/navbar'
 import ContextMenuPlugin from './m/context-menu'
-
+import Vue2Emoji from 'vuejs-emoji'
+Vue.use(Vue2Emoji)
 
 Vue.use(ElementUI)
 

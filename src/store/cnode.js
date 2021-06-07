@@ -2,7 +2,25 @@ import Vue from 'vue'
 
 const state = {
   postList: [],
-  isLoadPostList: false
+  isLoadPostList: false,
+  msg:'2',
+  adduser:{},// 新用户加入会话
+  newMsg:{}, // 接收新消息
+  sendMsg:{}, // 发送消息
+}
+const getters = {
+  getAddUser(state) {
+    return state.adduser
+  },
+  GetNewMsg(state) {
+    return state.newMsg
+  },
+  GetSendMsg(state) {
+    return state.sendMsg
+  },
+  GetMsg(state) {
+    return state.msg
+  }
 }
 
 const actions = {
@@ -41,5 +59,6 @@ const mutations = {
 export default {
   state,
   actions,
-  mutations
+  mutations,
+  getters
 }

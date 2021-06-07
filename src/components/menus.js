@@ -1,9 +1,5 @@
 const menus = [
   // {id: 'home', label: '在线客服', path: '/', icon: 'fa fa-dashboard'},
-
-  {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},
-  {id: 'label', label: '标签管理', path: '/label', icon: 'fa fa-dashboard'},
-  {id: 'leaveMsg', label: '留言管理', path: '/leaveMsg', icon: 'fa fa-dashboard'},
   {
     id: 'chat',
     icon: 'fa fa-circle-o',
@@ -13,6 +9,9 @@ const menus = [
       {id: 'history', name: 'history', label: '历史会话'},
     ]
   },
+  {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},
+  {id: 'label', label: '标签管理', path: '/label', icon: 'fa fa-dashboard'},
+  {id: 'leaveMsg', label: '留言管理', path: '/leaveMsg', icon: 'fa fa-dashboard'},
   {
     id: 'waiter',
     icon: 'fa fa-circle-o',

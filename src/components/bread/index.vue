@@ -24,7 +24,6 @@ export default {
     },
     methods: {
         getBreadcrumb() {
-            console.log(this.information);
             let matched = this.$route.matched.filter(item => item.name)
              this.breadList = matched
         }

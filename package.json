@@ -19,14 +19,18 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@microsoft/signalr": "^5.0.6",
     "animate.css": "^3.5.2",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.13.1",
+    "jquery": "^3.6.0",
     "nprogress": "^0.2.0",
     "qs": "^6.10.1",
+    "signalr": "^2.4.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vuejs-emoji": "^0.1.8",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
