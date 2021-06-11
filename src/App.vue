@@ -8,6 +8,7 @@
 import { mapActions,mapGetters } from 'vuex'
 import {GetUserData,} from "@/api/waiters";
 import {dingPush} from '@/api/dingTalk';
+import {logout} from '@/api/login';
 
 export default {
   name: 'app',
@@ -35,11 +36,34 @@ export default {
       console.log('发消息');
       this.sendMsg(msgdata);
     },
+    getuserinfo(user) {
+      this.addChatUser();
+      this.myPhoneNum = user.Phone;
+    }
 	},
   mounted() {
     Notification.requestPermission().then(res => {
         console.log(res);
       });
+    let that = this
+        let beginTime = 0; //开始时间
+        let differTime = 0; //时间差
+        window.onunload = function () {
+          differTime = new Date().getTime() - beginTime;
+          if (differTime <= 5) {
+            console.log("这是关闭");
+            logout(that).then(res => {
+                that.$router.replace("/login");
+            })
+          } else {
+            console.log("这是刷新");
+          }
+        };
+        window.onbeforeunload = function (e) {
+          //  e.returnValue = '关闭提示';  
+          beginTime = new Date().getTime();
+        };
+        
   },
   methods: {
     ...mapActions({
@@ -85,11 +109,10 @@ export default {
     SignalRfc() {
       // 获取用户信息
       GetUserData(this).then((res) => {
-        this.myPhoneNum = res.Phone
+        // this.myPhoneNum = res.Phone
          this.setUserinfo({
 					data:res
-				})
-      });
+				});
       const _this = this;
       var connection = $.hubConnection("");
       _this.demoChatHubProxy = connection.createHubProxy("chatHub");
@@ -148,7 +171,7 @@ export default {
             sengName:sengName,
             message:message,
             types:types,
-            states:state
+            states:state,
           }
         });
         // _this.sendShow(sendId, sengName, message, types, state,);
@@ -172,6 +195,7 @@ export default {
       })
       .fail(function () {
         _this.$message.error("连接失败");
+      });
       });
     },
 

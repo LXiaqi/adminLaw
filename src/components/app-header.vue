@@ -116,7 +116,6 @@ export default {
       },
     // 更改状态
     out(type) {
-      console.log('aaaa');
         this.out_types = type;
         if(type == 4) {
           logout(this).then(res => {

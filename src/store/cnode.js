@@ -4,24 +4,8 @@ const state = {
   postList: [],
   isLoadPostList: false,
   msg:'2',
-  adduser:{},// 新用户加入会话
-  newMsg:{}, // 接收新消息
-  sendMsg:{}, // 发送消息
 }
-const getters = {
-  getAddUser(state) {
-    return state.adduser
-  },
-  GetNewMsg(state) {
-    return state.newMsg
-  },
-  GetSendMsg(state) {
-    return state.sendMsg
-  },
-  GetMsg(state) {
-    return state.msg
-  }
-}
+
 
 const actions = {
   async getPostList ({commit}, params) {
@@ -60,5 +44,4 @@ export default {
   state,
   actions,
   mutations,
-  getters
 }

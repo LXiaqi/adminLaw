@@ -101,9 +101,11 @@
     <div class="quick" v-if="quickType == 1">
       <div class="quickTitle">
         <span>快捷回复</span>
-        <el-button class="el-icon-close" type="mini" @click="ShutDown()"></el-button>
+        <el-button type="warning" class="el-icon-close" size="mini" @click="ShutDown()"></el-button>
+        <el-button type="success" class="el-icon-refresh" size="mini" @click="Fastreply()"></el-button>
+        
       </div>
-      <el-table :data="quickData" height="880"  style="width: 100%">
+      <el-table :data="quickData" height="850"  style="width: 100%">
         <el-table-column prop="Contents" label="内容" width="300">
         </el-table-column>
         <el-table-column  label="操作" width="80">
@@ -331,20 +333,26 @@ export default {
     },
     // 新用户加入会话显示
     userAddShow(adduser){
-        let data = {
-          CustomerName: adduser.userName,
-          CustomerId: adduser.id,
-          UserName: this.getuserinfo.sendName,
-          UserId: this.getuserinfo.sendId,
-          Time: new Date(+new Date() + 8 * 3600 * 1000)
-            .toJSON()
-            .substr(0, 19)
-            .replace("T", " "),
-          Message: this.GetMsgs,
-          LabelName:[],
-          tips:true
-        };
-        this.chat_list.unshift(data);
+      let data = {
+        CustomerName: adduser.userName,
+        CustomerId: adduser.id,
+        UserName: this.getuserinfo.sendName,
+        UserId: this.getuserinfo.sendId,
+        Time: new Date(+new Date() + 8 * 3600 * 1000)
+          .toJSON()
+          .substr(0, 19)
+          .replace("T", " "),
+        Message: this.GetMsgs,
+        LabelName:[],
+        tips:true
+      };
+      this.chat_list.unshift(data);
+      this.detailList = [],
+      this.page = 1; //还原
+      this.chat_state = 0; // 选中下标改变状态来更改样式
+      this.customer_name = adduser.userName; // 选中聊天的对方名字
+      // this.head_img = adduser.id;
+      this.user_id = this.getuserinfo.sendId; // 当前会话客服id
         console.log(adduser);
         this.userInformationId = adduser.id;
         this.setselectreaceid({
@@ -356,7 +364,7 @@ export default {
           title: '提示',
           message: '客户'+adduser.userName+'加入会话',
           position: 'bottom-right',
-          duration: 0
+          duration: 30000
         });
         getreceid(this).then(res => {
           console.log('新用户加入消息之后重新获取一遍接待id（接口）：'+res.data.Id);
@@ -382,7 +390,7 @@ export default {
     },
     // 发送私聊消息的展示
     sendShow(newSendmsg){
-        let datas = {
+      let datas = {
           UserId: newSendmsg.sendId,
           UserName: newSendmsg.sengName,
           Message: newSendmsg.message,
@@ -395,7 +403,6 @@ export default {
           UserHeadImage:this.getuserinfo.Image
         };
         this.detailList.push(datas);
-        
         // 滚动条到底
         this.$nextTick(() => {
           this.$refs.content_view.scrollTop =
@@ -778,7 +785,7 @@ export default {
   
 }
 .chat_details2 {
-  width: 1049px;
+  width: 962px;
  
 }
 .chat_details_head {
@@ -888,7 +895,6 @@ export default {
 /* 快捷回复 */
 .quick {
   width: 399px;
-  height: 100vh;
   border-left: 1px solid #ccc;
 }
 .quickTitle {
@@ -898,7 +904,12 @@ export default {
   margin-top: 30px;
 }
 .el-icon-close {
-  margin-left: 30px;
+  float: right;
+  margin-right: 30px;
+}
+.el-icon-refresh {
+  float: right;
+  margin-right: 10px;
 }
 .el-icon-picture-outline {
   font-size: 40px;

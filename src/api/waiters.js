@@ -74,7 +74,7 @@ export async function chatHistoryMob(that) {
 }
 //  获取接待id
 export async function getreceid(that) {
-    const res = await that.$http.get('/Communication/GetUserId?custid='+that.userInformationId);
+    const res = await that.$http.get('/Communication/GetReceptId?custid='+that.userInformationId);
     if(res.success == false) {
         return res;
     }else {

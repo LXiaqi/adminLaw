@@ -25,6 +25,7 @@
 <script>
 import {mapActions} from 'vuex'
 import { adminLogin, } from "@/api/login";
+import {GetUserData,} from "@/api/waiters";
 export default {
   name: 'login',
   data () {
@@ -37,6 +38,11 @@ export default {
   },
   methods: {
     ...mapActions(['login']),
+    ...mapActions(
+    {
+        setUserinfo:'chat/setUserinfo',
+    }),
+
     handleLogin () {
       if (!this.username || !this.password) {
         return this.$message.warning('用户名和密码不能为空')
@@ -48,7 +54,14 @@ export default {
         password: this.password
       }).then(res => {
         adminLogin(that).then(res => {
-           that.$router.push({name: 'statements'})
+            // 获取用户信息
+            GetUserData(this).then((ret) => {
+              that.setUserinfo({
+                data:ret
+              });
+               that.$router.push({name: 'statements'})
+            })
+          
         })
         this.isLoging = false
       })

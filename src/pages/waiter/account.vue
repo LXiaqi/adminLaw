@@ -164,7 +164,7 @@ export default {
       },
       // 用户信息提交
       submitUser() {
-        if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(this.userinfo.Phone))){
+        if(!(/^[1][3,4,5,7,8,9][0-9]{9}$/.test(this.userinfo.Phone))){
             this.$message.error('手机号码有误请重新输入');
             return;
         }
