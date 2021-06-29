@@ -199,7 +199,20 @@ export default {
 	},
   watch: {
     getadduser(newadduser){
-      this.userAddShow(newadduser);
+      if(this.chat_list.length != 0) {
+        for(let i = 0; i < this.chat_list.length; i++)  {
+          if(this.chat_list[i].CustomerId != newadduser.id) {
+            this.userAddShow(newadduser)
+            return
+          } else {
+            return
+          }
+        }
+      } else {
+         this.userAddShow(newadduser)
+      }
+      
+      
     },
     getsendshow(newsendmsg){
       this.sendShow(newsendmsg);
@@ -540,7 +553,7 @@ export default {
       if (this.page <= this.total) {
         this.more_type = true;
         conversation(this).then((res) => {
-          for (let i = 0; i < res.data.length; i++) {
+          for (let i =  res.data.length-1; i >=0; i--) {
             this.detailList.unshift(res.data[i]);
           }
           this.more_type = false;

@@ -11,10 +11,13 @@
     </el-date-picker>
         <el-button type="primary" size="medium" @click="search()">查找</el-button>
         <el-button size="medium" @click="reset()">重置</el-button>
+          <el-button size="medium" type="success" @click="chatexport()">导出</el-button>
       </div>
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
+        <el-table-column prop="SendId" label="发送ID" ></el-table-column>
         <el-table-column prop="SendName" label="发送人" ></el-table-column>
+        <el-table-column prop="ToId" label="接收ID" ></el-table-column>
         <el-table-column prop="ToName" label="接收人" ></el-table-column>
         <el-table-column prop="Message" label="消息内容">
             <template slot-scope="scope">
@@ -95,6 +98,11 @@ export default {
         this.time = ['',''];
         this.info();
       }, 
+      // 导出
+      chatexport() {
+         window.location.href = '/ChatHistory/ExportChatHistory?phone='+this.phone+'&receptionName='+this.receptionName+'&customerName='+this.customerName+'&startTime='+this.time[0]+'&endTime='+this.time[1];
+        
+      }
   },
 };
 </script>

@@ -16,3 +16,21 @@ export async function reply(that) {
         return res;
     }
 }
+// 查看进度
+export async function GetDealInfo(that) {
+    const res = await that.$http.get('/MessageOrder/GetDealInfo?Id='+that.scheduleId);
+    if(res.success == false) {
+        that.$message.error(res.msg);
+    }else {
+        return res;
+    }
+}
+// 结束处理
+export async function FinishDeal(that) {
+    const res = await that.$http.get('/MessageOrder/FinishDeal?Id='+that.scheduleId);
+    if(res.success == false) {
+        that.$message.error(res.msg);
+    }else {
+        return res;
+    }
+}

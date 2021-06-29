@@ -13,12 +13,12 @@
       </div>
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
-        <el-table-column prop="OrderCode" label="订单号" ></el-table-column>
+        <el-table-column prop="OrderCode" label="订单号"  min-width="45"></el-table-column>
         <el-table-column prop="Msg" label="问题描述" >
           
         </el-table-column>
         <el-table-column prop="Remarks" label="补充内容" ></el-table-column>
-        <el-table-column label="图片">
+        <el-table-column label="图片" min-width="40">
              <template slot-scope="scope">
                <el-image class="img_" v-if="scope.row.Images.length != 0"  :src="scope.row.Images[0]" :preview-src-list="scope.row.Images" alt="" ></el-image>
             </template>
@@ -29,28 +29,31 @@
                 <span>{{scope.row.CustomerInfo.CustomerName}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="手机号">
+        <el-table-column label="手机号"  min-width="40">
             <template slot-scope="scope">
                 <span>{{scope.row.Phone}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="接待人">
+        <el-table-column label="接待人" min-width="30">
             <template slot-scope="scope">
                 <span>{{scope.row.UserInfo.UserName}}</span>
             </template>
         </el-table-column>
-        <el-table-column  label="状态" >
+        <el-table-column  label="状态" min-width="30">
              <template slot-scope="scope">
                 <span >{{scope.row.state}}</span>
             </template>
         </el-table-column>
         <el-table-column prop="CreateTime" label="时间" ></el-table-column>
-        <el-table-column prop="DealTime" label="处理时间" ></el-table-column>
-        <el-table-column prop="Explain" label="处理说明" ></el-table-column>
+     
+        <!-- <el-table-column prop="Explain" label="处理说明" ></el-table-column> -->
 
-        <el-table-column label="处理">
+        <el-table-column label="操作">
             <template slot-scope="scope">
-                <el-button type="warning" size="mini" @click="dispose(scope.row.Id)">处理</el-button>
+                <el-button type="primary" size="mini" @click="getSchedule(scope.row.Id)">查看</el-button>
+                <el-button type="warning" :disabled="scope.row.state =='已处理'" size="mini" @click="dispose(scope.row.Id)">处理</el-button>
+                <el-button type="danger" size="mini" @click="del(scope.row.Id)">结束</el-button>
+
             </template>
         </el-table-column>
       </el-table>
@@ -68,11 +71,25 @@
         <el-button type="primary" @click="submit()">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 查看处理进度 -->
+    <el-dialog  title="处理进度" :visible.sync="schedule" class="dialogbox">
+      <el-timeline>
+          <el-timeline-item :timestamp="item.CreateTime" placement="top" v-for="item in scheduleList" :key="item.index">
+            <el-card>
+              <h4>处理内容:{{item.Explain}}</h4>
+              <p>处理人:{{item.CreateUser}} </p>
+            </el-card>
+          </el-timeline-item>
+      </el-timeline>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="schedule = false">关 闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { LeaveMsgList,reply} from "@/api/leaveMsg";
+import { LeaveMsgList,reply,GetDealInfo,FinishDeal} from "@/api/leaveMsg";
 import Pagination from "@/components/Pagination";
 import bread from "@/components/bread";
 import untilsTime from "@/utils/Datetime";
@@ -95,6 +112,9 @@ export default {
         dialogType:false, // 模态框状态
         Explain:'', // 回复内容
         replyid:'', // 回复id
+        schedule:false,
+        scheduleId:'',
+        scheduleList:[]
     };
   },
   created() {
@@ -114,8 +134,10 @@ export default {
               }
               if(res.data[i].Statuz == 0) {
                   res.data[i].state = '未处理';
-              }else {
+              }else if (res.data[i].Statuz == 1) {
                   res.data[i].state = '已处理';
+              } else {
+                  res.data[i].state = '处理中';
               }
             }
               this.accountData = res.data;
@@ -153,6 +175,21 @@ export default {
             this.Explain = '';
             this.info();
           })
+      },
+      // 查看处理进度
+      getSchedule(id) {
+        this.schedule = true
+        this.scheduleId = id
+        GetDealInfo(this).then(res => {
+          this.scheduleList = res.data
+        })
+      },
+      // 结束
+      del(id) {
+        this.scheduleId = id
+        FinishDeal(this).then(res => {
+          this.info()
+        })
       }
   },
 };
@@ -180,5 +217,10 @@ export default {
 .img_ {
   width: 60px;
   height: 60px;
+}
+
+.dialogbox >>>.el-dialog__body {
+  overflow-y: scroll;
+  height: 580px;
 }
 </style>

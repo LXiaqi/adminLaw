@@ -33,7 +33,7 @@ export default {
 	},
   watch: {
     getsendMsg(msgdata){
-      console.log('发消息');
+      console.log(msgdata);
       this.sendMsg(msgdata);
     },
     getuserinfo(user) {
