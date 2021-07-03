@@ -194,24 +194,24 @@ export default {
               getadduser:'chat/getadduser',
               getuserinfo:'chat/getuserinfo',
               getsendshow:'chat/getsendshow',
-              getreceiveShow:'chat/getreceiveShow'
+              getreceiveShow:'chat/getreceiveShow',
+              getselectreaceid:'chat/getselectreaceid'
 	        }),
 	},
   watch: {
     getadduser(newadduser){
+      let chat_type = false 
       if(this.chat_list.length != 0) {
         for(let i = 0; i < this.chat_list.length; i++)  {
-          if(this.chat_list[i].CustomerId != newadduser.id) {
-            this.userAddShow(newadduser)
-            return
-          } else {
-            return
-          }
+          if(this.chat_list[i].CustomerId == newadduser.id) {
+             chat_type = true
+             break
+          } 
         }
-      } else {
-         this.userAddShow(newadduser)
-      }
-      
+      } 
+        if(!chat_type) {
+          this.userAddShow(newadduser)
+        }
       
     },
     getsendshow(newsendmsg){
@@ -332,7 +332,14 @@ export default {
         setLabel(this).then(res => {
             this.labelval = [];
             this.dialogType = false;
-            this.info();
+
+            chatList(this).then((res2) => {
+                 this.right_type = 1;
+                this.chat_list = res2.data;
+                this.getwaiter();
+                this.dingtalkPush_two();
+                this.userinfo();
+            });
           });
       }else {
         this.$message.error('必须选择当前标签的最后一级作为选中对象');
@@ -359,7 +366,11 @@ export default {
         LabelName:[],
         tips:true
       };
-      this.chat_list.unshift(data);
+
+       this.chat_list.unshift(data);
+      console.log(this.chat_list)
+     
+     
       this.detailList = [],
       this.page = 1; //还原
       this.chat_state = 0; // 选中下标改变状态来更改样式
@@ -496,6 +507,7 @@ export default {
    
     // 左侧聊天列表的渲染
     info() {
+      console.log(this.getselectreaceid)
       chatList(this).then((res) => {
         if(res.data.length == 0) {
           this.chat_list = [];
