@@ -184,8 +184,12 @@ export default {
       connection.disconnected(()=>{
           console.log('断线')
           setTimeout(() => {
-            connection.start();
-            _this.addChatUser();
+            connection.start().done(function () {
+              _this.addChatUser();
+          })
+            .fail(function () {
+            _this.$message.error("连接失败");
+          });
             console.log('重连');
           }, 500);
       })
@@ -196,7 +200,7 @@ export default {
       .fail(function () {
         _this.$message.error("连接失败");
       });
-      });
+    });
     },
 
     addChatUser() {

@@ -1,224 +1,255 @@
 <template>
   <div class="chat_content_pc">
-      <div class="chat_list">
-          <div class="lable">
-              <div>历史会话</div>
-          </div>
-          <div class="chat_input_pcbox">
-              <el-input v-model="search_user" placeholder="搜索聊天用户" clearable class="search_chat_ipt"></el-input>
-              <el-button slot="append" icon="el-icon-search" @click="searchBtn()"></el-button>
-          </div>
-          <!-- 聊天侧边栏 -->
-          <div class="chats_content_box" >
-              <div @click="viewDetails(item,index)" v-for="(item, index) in chat_list" :key="item.Id" class="chat_on_box" :id="chat_state == index ? 'chat_select' :'' ">
-                  <img class="chat_img" :src="item.HeadImage" alt="">
-                  <span class="chat_name">{{item.CustomerName}}</span>
-                   <div class="chat_time">{{item.Time}}</div>
-                   <div class="chat_userinfo" v-html="item.Message"></div>
-              </div>
-          </div>
+    <div class="chat_list">
+      <div class="lable">
+        <div>历史会话</div>
       </div>
-      <!-- 聊天内容聊天详情 -->
-      <div class="chat_details">
-        <el-container>
-            <!-- 头部信息 -->
-            <el-header class="chat_details_head">
-                <img class="active_img" :src="customer_img" alt="">
-                <span> {{customer_name}}</span>
-                 <el-button class="head_btn" @click="user_information()">...</el-button>
-            </el-header>
-            <!-- 聊天内容 -->
-            <el-main>
-                <div class="chat_details_content">
-                    <span class="tips" @click="more()" v-loading="more_type" v-show="more_show">加载更多</span>
-                    <div v-for="item in conversationList" :key="item.Id" class="chat_my_left">
-                        <div v-show="item.Types == 1">
-                            <div class="chat_details_info_box">
-                                <img :src="item.CustomerHeadImage" alt="">
-                                <div class="chat_details_active_time">
-                                    <div>{{item.CustomerName}}</div>
-                                    <span>{{item.CreateTime}}</span>
-                                </div>
-                            </div>
-                            <div class="chat_details_sentence">
-                                <span v-show="!item.img" v-html="item.Message"></span>
-                                <el-image
-                                    class="img_chat"
-                                    v-if="item.img"
-                                    :src="item.Message"
-                                    :preview-src-list="[item.Message]"
-                                    alt=""
-                                ></el-image>
-                            </div>
-                        </div>
-                        <div v-show="item.Types == 0" class="chat_my_right">
-                            <div class="chat_details_info_box">
-                                <img  :src="item.UserHeadImage" alt="">
-                                <div class="chat_details_active_time">
-                                    <div style="text-align:left">{{item.UserName}}</div>
-                                    <span>{{item.CreateTime}}</span>
-                                </div>
-                            </div>
-                            <div class="chat_my_right_msgbox">
-                               <span class="chat_details_sentence_s" v-show="!item.img" v-html="item.Message">
-                                    
-                               </span>
-                                <el-image
-                                    class="img_chat"
-                                    v-if="item.img"
-                                    :src="item.Message"
-                                    :preview-src-list="[item.Message]"
-                                    alt=""
-                                ></el-image>
-                            </div>
-                        </div>
-                    </div>
+      <div class="chat_input_pcbox">
+        <el-input
+          v-model="search_user"
+          placeholder="搜索聊天用户"
+          clearable
+          class="search_chat_ipt"
+        ></el-input>
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="searchBtn()"
+        ></el-button>
+      </div>
+      <!-- 聊天侧边栏 -->
+      <div class="chats_content_box">
+        <div
+          @click="viewDetails(item, index)"
+          v-for="(item, index) in chat_list"
+          :key="item.Id"
+          class="chat_on_box"
+          :id="chat_state == index ? 'chat_select' : ''"
+        >
+          <img
+            class="chat_img"
+            :src="'https://images.weserv.nl/?url=' + item.HeadImage"
+            alt=""
+          />
+          <span class="chat_name">{{ item.CustomerName }}</span>
+          <div class="chat_time">{{ item.Time }}</div>
+          <div class="chat_userinfo" v-html="item.Message"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 聊天内容聊天详情 -->
+    <div class="chat_details">
+      <el-container>
+        <!-- 头部信息 -->
+        <el-header class="chat_details_head">
+          <img class="active_img" :src="customer_img" alt="" />
+          <span> {{ customer_name }}</span>
+          <el-button class="head_btn" @click="user_information()"
+            >...</el-button
+          >
+        </el-header>
+        <!-- 聊天内容 -->
+        <el-main>
+          <div class="chat_details_content">
+            <span
+              class="tips"
+              @click="more()"
+              v-loading="more_type"
+              v-show="more_show"
+              >加载更多</span
+            >
+            <div
+              v-for="item in conversationList"
+              :key="item.Id"
+              class="chat_my_left"
+            >
+              <div v-show="item.Types == 1">
+                <div class="chat_details_info_box">
+                  <img
+                    :src="
+                      'https://images.weserv.nl/?url=' + item.CustomerHeadImage
+                    "
+                    alt=""
+                  />
+                  <div class="chat_details_active_time">
+                    <div>{{ item.CustomerName }}</div>
+                    <span>{{ item.CreateTime }}</span>
+                  </div>
                 </div>
-               
-            </el-main>
-        </el-container>
-
+                <div class="chat_details_sentence">
+                  <span v-show="!item.img" v-html="item.Message"></span>
+                  <el-image
+                    class="img_chat"
+                    v-if="item.img"
+                    :src="'https://images.weserv.nl/?url=' + item.Message"
+                    :preview-src-list="[
+                      'https://images.weserv.nl/?url=' + item.Message,
+                    ]"
+                    alt=""
+                  ></el-image>
+                </div>
+              </div>
+              <div v-show="item.Types == 0" class="chat_my_right">
+                <div class="chat_details_info_box">
+                  <img
+                    :src="'https://images.weserv.nl/?url=' + item.UserHeadImage"
+                    alt=""
+                  />
+                  <div class="chat_details_active_time">
+                    <div style="text-align: left">{{ item.UserName }}</div>
+                    <span>{{ item.CreateTime }}</span>
+                  </div>
+                </div>
+                <div class="chat_my_right_msgbox">
+                  <span
+                    class="chat_details_sentence_s"
+                    v-show="!item.img"
+                    v-html="item.Message"
+                  >
+                  </span>
+                  <el-image
+                    class="img_chat"
+                    v-if="item.img"
+                    :src="'https://images.weserv.nl/?url=' + item.Message"
+                    :preview-src-list="[
+                      'https://images.weserv.nl/?url=' + item.Message,
+                    ]"
+                    alt=""
+                  ></el-image>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-main>
+      </el-container>
+    </div>
+    <!-- 个人信息的模态框 -->
+    <el-drawer title="用户资料" :visible.sync="drawer">
+      <div class="user_customer">客户名称：{{ customerData.CustomerName }}</div>
+      <div class="user_customer">
+        客户类型：{{ customerData.Types == 1 ? '个人' : '企业' }}
       </div>
-      <!-- 个人信息的模态框 -->
-      <el-drawer title="用户资料" :visible.sync="drawer">
-        <div class="user_customer">
-            客户名称：{{customerData.CustomerName}}
-        </div>
-        <div class="user_customer">
-            客户类型：{{customerData.Types == 1 ? '个人' : '企业'}}
-        </div>
-        <div class="user_customer">
-            会员信息：{{customerData.Vip}}
-        </div>
-        <div class="user_customer">
-            会员年限：{{customerData.VipYears}}
-        </div>
-        <div class="user_customer">
-            客户地址：{{customerData.Location}}
-        </div>
-        <div class="user_customer">
-            联系方式：{{customerData.Phone}}
-        </div>
-      </el-drawer>
+      <div class="user_customer">会员信息：{{ customerData.Vip }}</div>
+      <div class="user_customer">会员年限：{{ customerData.VipYears }}</div>
+      <div class="user_customer">客户地址：{{ customerData.Location }}</div>
+      <div class="user_customer">联系方式：{{ customerData.Phone }}</div>
+    </el-drawer>
   </div>
 </template>
 
 <script>
-import { chatList,conversation,getCustomerInfo } from "@/api/waiters";
+import { chatList, conversation, getCustomerInfo } from '@/api/waiters'
 export default {
- data() {
-     return {
-        receptionId:'', // 接待id
-         chat_list:[], // 当前会话列表
-         search_user:'',// 搜索内容
-         chatType:1, // 聊天列表的状态 0是当前会话 1 是历史会话，
-         chat_state:0, // 点击选中的状态
-         customer_name:'',// 聊天详情中左上角客户名字
-         customer_img:'', // 选中的客户头像
-         page:1, //当前页数
-         pagenum:10,// 每页条数
-         user_id:'', // 当前选中会话的id
-         conversationList:[], // 当前选中会话的聊天内容， 数组
-         chat_sendout:'',// 发送聊天文本域内容
-         demoChatHubProxy:{},
-         userInformationId:'', // 侧边栏的展开的个用户id
-         drawer:false, // 用户信息资料模态框显示隐藏
-         customerData:{}, //客户资料
-         more_type:false, // 加载动画的显示隐藏
-         more_show:false, // 加载的隐藏显示（当数据不足分页的时候隐藏加载提示）
-         total:0,// 总页数
-        
-     }
- },
-  created() {
-    
+  data() {
+    return {
+      receptionId: '', // 接待id
+      chat_list: [], // 当前会话列表
+      search_user: '', // 搜索内容
+      chatType: 1, // 聊天列表的状态 0是当前会话 1 是历史会话，
+      chat_state: 0, // 点击选中的状态
+      customer_name: '', // 聊天详情中左上角客户名字
+      customer_img: '', // 选中的客户头像
+      page: 1, //当前页数
+      pagenum: 10, // 每页条数
+      user_id: '', // 当前选中会话的id
+      conversationList: [], // 当前选中会话的聊天内容， 数组
+      chat_sendout: '', // 发送聊天文本域内容
+      demoChatHubProxy: {},
+      userInformationId: '', // 侧边栏的展开的个用户id
+      drawer: false, // 用户信息资料模态框显示隐藏
+      customerData: {}, //客户资料
+      more_type: false, // 加载动画的显示隐藏
+      more_show: false, // 加载的隐藏显示（当数据不足分页的时候隐藏加载提示）
+      total: 0, // 总页数
+    }
   },
+  created() {},
   mounted() {
-   this.info();
+    this.info()
   },
-  
+
   methods: {
     // 搜索按钮
-     searchBtn() {
-      this.info();
+    searchBtn() {
+      this.info()
     },
-   // 左侧聊天列表的渲染
-   info() {
-       chatList(this).then(res => {
-            this.chat_list = res.data;
-            this.customer_name =  this.chat_list[0].CustomerName;
-            this.customer_img = this.chat_list[0].HeadImage;
-            this.user_id =  this.chat_list[0].UserId;
-            this.userInformationId  =  this.chat_list[0].CustomerId;
-            this.receptionId = this.chat_list[0].Id;
-            this.userinfo();
-       });    
-   },
-   // 聊天详情的渲染
-   userinfo() {
-        conversation(this).then(res => {
-            if(res.recordsTotal <= 10){
-                this.more_show = false
-            }else {
-                 this.more_show = true
-            }
-            this.total = Math.ceil(res.recordsTotal/10);
-             for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i].Message.indexOf("https://files.365lawhelp.com") == -1) {
-                    res.data[i].img = false;
-                } else {
-                    res.data[i].img = true;
-                }
-            }
-            this.conversationList = res.data;
-        })    
-   },
-   // 列表的点击
-   viewDetails(data,index) {
-        this.page = 1;//还原
-        this.chat_state = index; // 选中下标改变状态来更改钥匙
-        this.customer_name =  data.CustomerName; // 选中聊天的对方名字
-        this.customer_img = data.HeadImage;
-        this.user_id =  data.UserId; // 当前会话id
-        this.userInformationId  = data.CustomerId; // 选中会话的对方id
-        this.receptionId = data.Id;
-        this.userinfo();
-   },
-   // 点击加载更多，渲染更多聊天内容
-   more() {
-       this.page++;
-       console.log(this.total);
-       if(this.page <= this.total) {
-            this.more_type = true;
-            conversation(this).then(res => {
-            for(let i = res.data.length-1; i >= 0; i--){
-                this.conversationList.unshift(res.data[i]);
-               
-            }
-                this.more_type = false;
-            })  
-       }else {
-            this.more_type = false;
-            this.more_show = false;
-       }
-      
-       console.log(this.page);
-   },
+    // 左侧聊天列表的渲染
+    info() {
+      chatList(this).then((res) => {
+        this.chat_list = res.data
+        this.customer_name = this.chat_list[0].CustomerName
+        this.customer_img = this.chat_list[0].HeadImage
+        this.user_id = this.chat_list[0].UserId
+        this.userInformationId = this.chat_list[0].CustomerId
+        this.receptionId = this.chat_list[0].Id
+        this.userinfo()
+      })
+    },
+    // 聊天详情的渲染
+    userinfo() {
+      conversation(this).then((res) => {
+        if (res.recordsTotal <= 10) {
+          this.more_show = false
+        } else {
+          this.more_show = true
+        }
+        this.total = Math.ceil(res.recordsTotal / 10)
+        for (let i = 0; i < res.data.length; i++) {
+          if (
+            res.data[i].Message.indexOf('https://files.365lawhelp.com') == -1
+          ) {
+            res.data[i].img = false
+          } else {
+            res.data[i].img = true
+          }
+        }
+        this.conversationList = res.data
+      })
+    },
+    // 列表的点击
+    viewDetails(data, index) {
+      this.page = 1 //还原
+      this.chat_state = index // 选中下标改变状态来更改钥匙
+      this.customer_name = data.CustomerName // 选中聊天的对方名字
+      this.customer_img = data.HeadImage
+      this.user_id = data.UserId // 当前会话id
+      this.userInformationId = data.CustomerId // 选中会话的对方id
+      this.receptionId = data.Id
+      this.userinfo()
+    },
+    // 点击加载更多，渲染更多聊天内容
+    more() {
+      this.page++
+      console.log(this.total)
+      if (this.page <= this.total) {
+        this.more_type = true
+        conversation(this).then((res) => {
+          for (let i = res.data.length - 1; i >= 0; i--) {
+            this.conversationList.unshift(res.data[i])
+          }
+          this.more_type = false
+        })
+      } else {
+        this.more_type = false
+        this.more_show = false
+      }
 
-   // 个人信息的展开
-   user_information() {
-       this.drawer = true;
-       getCustomerInfo(this).then(res => {
-           this.customerData = res.data
-       })
-   }
-  }
+      console.log(this.page)
+    },
+
+    // 个人信息的展开
+    user_information() {
+      this.drawer = true
+      getCustomerInfo(this).then((res) => {
+        this.customerData = res.data
+      })
+    },
+  },
 }
 </script>
 
 <style scoped>
 .chat_content_pc {
-
   display: flex;
 }
 .chat_list {
@@ -296,11 +327,9 @@ export default {
 /* 聊天内容聊天详情 */
 .chat_details {
   width: 1360px;
-  
 }
 .chat_details2 {
   width: 1049px;
-
 }
 .chat_details_head {
   border-bottom: 1px solid #ebebeb;
@@ -394,6 +423,6 @@ export default {
 .avatar-uploader {
   display: inline-block;
   font-size: 24px;
-  margin:0 30px;
+  margin: 0 30px;
 }
 </style>
