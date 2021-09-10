@@ -102,7 +102,9 @@ export default {
     // 查找
     search() {
       this.listQuery.page = 1
-
+      if (!this.time) {
+        this.time = ['', '']
+      }
       this.info()
     },
     // 重置

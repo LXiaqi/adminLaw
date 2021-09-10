@@ -124,11 +124,13 @@ export default {
         this.listQuery.total = res.recordsTotal
       })
     },
+
     // 查找
     search() {
       this.listQuery.page = 1
-      console.log(this.time)
-
+      if (!this.time) {
+        this.time = ['', '']
+      }
       this.info()
     },
     // 重置
