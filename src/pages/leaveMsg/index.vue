@@ -41,9 +41,7 @@
               class="img_"
               v-if="scope.row.Images.length != 0"
               :src="'https://images.weserv.nl/?url=' + scope.row.Images[0]"
-              :preview-src-list="
-                'https://images.weserv.nl/?url=' + scope.row.Images
-              "
+              :preview-src-list="scope.row.Images"
               alt=""
             ></el-image>
           </template>

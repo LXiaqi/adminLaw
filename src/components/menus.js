@@ -7,6 +7,7 @@ const menus = [
     submenu: [
       {id: 'now', name: 'now', label: '在线客服'},
       {id: 'history', name: 'history', label: '历史会话'},
+      {id: 'newChat', name: 'newChat', label: '新在线客服'},
     ]
   },
   {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},

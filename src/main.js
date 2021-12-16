@@ -20,6 +20,7 @@ import DropdownPlugin from './m/dropdown'
 import NavbarPlugin from './m/navbar'
 import ContextMenuPlugin from './m/context-menu'
 import Vue2Emoji from 'vuejs-emoji'
+Vue.prototype.$bus = new Vue()
 Vue.use(Vue2Emoji)
 
 Vue.use(ElementUI)

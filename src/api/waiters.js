@@ -1,7 +1,7 @@
 import qs from	'qs'
 // 会话列表  0是当前会话1是历史会话
 export async function chatList(that) {
-    const res = await that.$http.get('/ChatHistory/GetChatHistoryList?Type='+that.chatType+'&customerName='+that.search_user);
+    const res = await that.$http.get('/ChatHistory/GetChatHistoryList?Type='+that.chatType+'&customerName='+that.keymords);
     if(res.success == false) {
         that.$message.error(res.msg);
     }else {
@@ -9,8 +9,8 @@ export async function chatList(that) {
     }
 }
 // 会话详情内容（当前会话）
-export async function conversation(that) {
-    const res = await that.$http.get('/ChatHistory/GetChatHistoryRecord?start='+that.page+'&length='+that.pagenum+'&customerId='+that.userInformationId+'&userId='+that.user_id+'&types='+that.chatType+'&receptionId='+that.receptionId);
+export async function conversation(that,id) {
+    const res = await that.$http.get('/ChatHistory/GetChatHistoryRecord?start='+that.paging.page+'&length='+that.paging.pageSize+'&customerId='+id);
     if(res.success == false) {
         that.$message.error(res.msg);
     }else {
