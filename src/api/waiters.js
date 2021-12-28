@@ -105,3 +105,13 @@ export async function DeleteCon(that) {
        return res;
     }
 }
+// 选择标签结束会话
+export async function commitLab(that,linkid,labs) {
+    const res = await that.$http.get('/Reception/FinishChat?receid='+linkid+'&labelIds='+labs);
+    if(res.success == false) {
+        that.$message.error(res.msg);
+    }else {
+        that.$message.success(res.msg);
+    }
+    return res;
+}

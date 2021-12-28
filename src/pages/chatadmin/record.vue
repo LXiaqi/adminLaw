@@ -19,6 +19,11 @@
           v-model="phone"
           placeholder="手机号"
         ></el-input>
+        <el-input
+          class="search_ipt"
+          v-model="keywords"
+          placeholder="关键字"
+        ></el-input>
         <el-date-picker
           v-model="time"
           type="daterange"
@@ -38,10 +43,18 @@
       </div>
       <!-- 表格数据 -->
       <el-table :data="accountData" style="width: 100%">
-        <el-table-column prop="SendId" label="发送ID"></el-table-column>
-        <el-table-column prop="SendName" label="发送人"></el-table-column>
-        <el-table-column prop="ToId" label="接收ID"></el-table-column>
-        <el-table-column prop="ToName" label="接收人"></el-table-column>
+        <!-- <el-table-column prop="SendId" label="发送ID"></el-table-column> -->
+        <el-table-column
+          prop="SendName"
+          label="发送人"
+          width="300"
+        ></el-table-column>
+        <!-- <el-table-column prop="ToId" label="接收ID"></el-table-column> -->
+        <el-table-column
+          prop="ToName"
+          label="接收人"
+          width="300"
+        ></el-table-column>
         <el-table-column prop="Message" label="消息内容">
           <template slot-scope="scope">
             <span
@@ -60,7 +73,11 @@
             ></el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="CreateTime" label="时间"></el-table-column>
+        <el-table-column
+          prop="CreateTime"
+          label="时间"
+          width="200"
+        ></el-table-column>
       </el-table>
       <pagination
         v-show="listQuery.total > 10"
@@ -95,6 +112,7 @@ export default {
       customerName: '', // 客户姓名
       receptionName: '', // 接待人
       phone: '', // 手机号
+      keywords: '', //关键字
       time: ['', ''], // 开始时间和结束时间的数组
     }
   },
@@ -121,7 +139,7 @@ export default {
           }
         }
         this.accountData = res.data
-        this.listQuery.total = res.recordsTotal
+        this.listQuery.total = res.Total
       })
     },
 
@@ -139,6 +157,7 @@ export default {
       this.receptionName = ''
       this.phone = ''
       this.time = ['', '']
+      this.keywords = ''
       this.info()
     },
     // 导出

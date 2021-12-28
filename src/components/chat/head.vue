@@ -5,11 +5,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
       name: '',
     }
+  },
+  computed: {
+    ...mapGetters({
+      getoverConversation: 'chat/getoverConversation',
+    }),
+  },
+  watch: {
+    getoverConversation(newdata) {
+      this.removeSession(newdata)
+    },
   },
   mounted() {
     this.info()
@@ -19,6 +30,12 @@ export default {
       this.$bus.$on('selectChat', (msg) => {
         this.name = msg.CustomerName
       })
+    },
+    // 清除会话
+    removeSession(row) {
+      if (row.type) {
+        this.name = ''
+      }
     },
   },
 }

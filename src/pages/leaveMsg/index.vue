@@ -195,7 +195,7 @@ export default {
           }
         }
         this.accountData = res.data
-        this.listQuery.total = res.recordsTotal
+        this.listQuery.total = res.Total
       })
     },
     // 查找

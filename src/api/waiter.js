@@ -73,3 +73,16 @@ export async function ExportUserOnline(that) {
     const res = await that.$http.get();
     return res;
 }
+// 开启留言或者关闭留言
+export async function ChangeIsDistribute(that,id,type) {
+    const res = await that.$http.get('/UserInfo/ChangeIsDistribute?userId='+id+'&IsDistribute='+type);
+    if(res.success == false) {
+        that.$message.error(res.msg);
+    }else {
+        that.$message({
+            message: res.msg,
+            type: 'success'
+          });
+        return res;
+    }
+}

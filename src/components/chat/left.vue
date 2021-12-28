@@ -49,6 +49,7 @@ export default {
       chat_list: [], // 会话列表
       chatType: 0, // 聊天列表的状态 0是当前会话 1 是历史会话， 这里固定为0
       selectChatData: {},
+      timer: null,
     }
   },
   computed: {
@@ -57,6 +58,10 @@ export default {
       getuserinfo: 'chat/getuserinfo',
       getsendshow: 'chat/getsendshow',
       getreceiveShow: 'chat/getreceiveShow',
+      getsendImgshow: 'chat/getsendImgshow',
+      getreceiveImgShow: 'chat/getreceiveImgShow',
+      getsendEvaluateshow: 'chat/getsendEvaluateshow',
+      getoverConversation: 'chat/getoverConversation',
     }),
   },
   watch: {
@@ -79,11 +84,26 @@ export default {
     getreceiveShow(newreceivemsg) {
       this.receiveShow(newreceivemsg)
     },
+    getsendImgshow(newreceivemsg) {
+      this.sendImgShow(newreceivemsg)
+    },
+    getreceiveImgShow(newreceivemsg) {
+      this.receiveImgShow(newreceivemsg)
+    },
+    getsendEvaluateshow(newreceivemsg) {
+      this.sendEvaluateshow(newreceivemsg)
+    },
+    getoverConversation(newdata) {
+      this.removeSession(newdata)
+    },
   },
   mounted() {
     this.info()
   },
   methods: {
+    ...mapActions({
+      setoverConversation: 'chat/setoverConversation',
+    }),
     //拉取会话列表
     info() {
       chatList(this).then((res) => {
@@ -97,7 +117,6 @@ export default {
     },
     // 会话点击选中
     selectChat(row) {
-      console.log(row)
       this.selectChatData = row
       this.$bus.$emit('selectChat', row)
     },
@@ -106,8 +125,11 @@ export default {
     userAddShow(row) {
       console.log(row)
       let data = {
+        UserId: this.getuserinfo.sendId,
+        Id: row.linkid,
         CustomerId: row.id,
         CustomerName: row.userName,
+        Message: '',
         HeadImage:
           row.userphoto.indexOf('http') == -1
             ? 'https://images.weserv.nl/?url=https://api.365lawhelp.com/uploads/default_avatar.png'
@@ -117,6 +139,8 @@ export default {
     },
     // 发送消息渲染到侧边栏
     sendShow(row) {
+      console.log(row)
+      console.log(this.chat_list)
       this.chat_list.forEach((item) => {
         if (row.toId == item.CustomerId) {
           item.Time = new Date(+new Date() + 8 * 3600 * 1000)
@@ -124,6 +148,42 @@ export default {
             .substr(0, 19)
             .replace('T', ' ')
           item.Message = row.msg
+        }
+      })
+    },
+    // 发送图片渲染到侧边栏
+    sendImgShow(row) {
+      this.chat_list.forEach((item) => {
+        if (row.toId == item.CustomerId) {
+          item.Time = new Date(+new Date() + 8 * 3600 * 1000)
+            .toJSON()
+            .substr(0, 19)
+            .replace('T', ' ')
+          item.Message = '图片'
+        }
+      })
+    },
+    //发送评价消息到侧边栏
+    sendEvaluateshow(row) {
+      this.chat_list.forEach((item) => {
+        if (row.toId == item.CustomerId) {
+          item.Time = new Date(+new Date() + 8 * 3600 * 1000)
+            .toJSON()
+            .substr(0, 19)
+            .replace('T', ' ')
+          item.Message = row.msg
+        }
+      })
+    },
+    // 接收图消息渲染到侧边栏
+    receiveImgShow(row) {
+      this.chat_list.forEach((item) => {
+        if (row.sendId == item.CustomerId) {
+          item.Time = new Date(+new Date() + 8 * 3600 * 1000)
+            .toJSON()
+            .substr(0, 19)
+            .replace('T', ' ')
+          item.Message = '图片'
         }
       })
     },
@@ -139,6 +199,29 @@ export default {
         }
       })
     },
+    // 结束会话删除侧边栏的数据
+    removeSession(row) {
+      if (row.type) {
+        for (let i = 0; i < this.chat_list.length; i++) {
+          if (row.id == this.chat_list[i].CustomerId) {
+            this.chat_list.splice(i, 1)
+            return
+          }
+        }
+        this.timer = setTimeout(() => {
+          this.setoverConversation({
+            data: {
+              type: false,
+              id: '',
+            },
+          })
+        }, 100)
+      }
+    },
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

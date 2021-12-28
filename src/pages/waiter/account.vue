@@ -39,6 +39,17 @@
             <span>{{ scope.row.Sex == 1 ? '男' : '女' }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="IsDistribute" label="留言（开启/关闭）">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.IsDis"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change="isleave(scope.row)"
+            >
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="edit(scope.row)"
@@ -132,7 +143,13 @@
 </template>
 
 <script>
-import { accountList, Delaccount, Addaccount, Editaccount } from '@/api/waiter'
+import {
+  accountList,
+  Delaccount,
+  Addaccount,
+  Editaccount,
+  ChangeIsDistribute,
+} from '@/api/waiter'
 import Pagination from '@/components/Pagination'
 import bread from '@/components/bread'
 
@@ -186,9 +203,19 @@ export default {
             default:
               break
           }
+          switch (res.data[i].IsDistribute) {
+            case 0:
+              res.data[i].IsDis = true
+              break
+            case 1:
+              res.data[i].IsDis = false
+              break
+            default:
+              break
+          }
         }
         this.accountData = res.data
-        this.listQuery.total = res.recordsTotal
+        this.listQuery.total = res.Total
       })
     },
     // 查找
@@ -248,6 +275,12 @@ export default {
     no() {
       this.dialogType = false
       this.info()
+    },
+    //开启或关闭留言
+    isleave(row) {
+      console.log(row)
+      let type = row.IsDis ? 0 : 1
+      ChangeIsDistribute(this, row.Id, type).then(() => {})
     },
   },
 }

@@ -10,7 +10,13 @@ const menus = [
       {id: 'newChat', name: 'newChat', label: '新在线客服'},
     ]
   },
-  {id: 'statements', label: '语句管理', path: '/statements', icon: 'fa fa-dashboard'},
+  {id: 'navigation', label: '导航管理', path: '/navigation', icon: 'fa fa-dashboard'},
+  {id: 'language', label: '语句管理', icon: 'fa fa-dashboard',
+    submenu: [
+      {id: 'statements', name: 'statements', label: '快捷话术'},
+      {id: 'knowledge', name: 'knowledge', label: '知识库'},
+    ]
+  },
   {id: 'label', label: '标签管理', path: '/label', icon: 'fa fa-dashboard'},
   {id: 'leaveMsg', label: '留言管理', path: '/leaveMsg', icon: 'fa fa-dashboard'},
   {

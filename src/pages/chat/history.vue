@@ -188,12 +188,12 @@ export default {
     // 聊天详情的渲染
     userinfo() {
       conversation(this).then((res) => {
-        if (res.recordsTotal <= 10) {
+        if (res.Total <= 10) {
           this.more_show = false
         } else {
           this.more_show = true
         }
-        this.total = Math.ceil(res.recordsTotal / 10)
+        this.total = Math.ceil(res.Total / 10)
         for (let i = 0; i < res.data.length; i++) {
           if (
             res.data[i].Message.indexOf('https://files.365lawhelp.com') == -1

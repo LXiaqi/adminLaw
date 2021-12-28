@@ -22,7 +22,7 @@ module.exports = {
     proxyTable: {
       '/': {
         // target: 'https://online.365lawhelp.com',
-        target: 'http://192.168.6.103:8089',
+        target: 'http://192.168.6.125:8081',
 
         changeOrigin: true,
       }

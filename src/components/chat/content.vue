@@ -85,6 +85,8 @@ export default {
       getsendImgshow: 'chat/getsendImgshow',
       getreceiveShow: 'chat/getreceiveShow',
       getreceiveImgShow: 'chat/getreceiveImgShow',
+      getsendEvaluateshow: 'chat/getsendEvaluateshow',
+      getoverConversation: 'chat/getoverConversation',
     }),
   },
   watch: {
@@ -99,6 +101,12 @@ export default {
     },
     getreceiveImgShow(newreceivemsg) {
       this.receiveImgShow(newreceivemsg)
+    },
+    getsendEvaluateshow(newreceivemsg) {
+      this.evaluateshow(newreceivemsg)
+    },
+    getoverConversation(newdata) {
+      this.removeSession(newdata)
     },
   },
   data() {
@@ -128,9 +136,31 @@ export default {
     // 发送的消息上屏
     sendShow(row) {
       console.log(row)
+      if (row.msg != '结束会话!') {
+        if (row.toId == this.selectChat.CustomerId) {
+          this.chatRecordList.push({
+            State: 0,
+            Types: 0,
+            Message: row.msg,
+            UserName: this.getuserinfo.sendName,
+            UserHeadImage: this.getuserinfo.Image,
+            CreateTime: new Date(+new Date() + 8 * 3600 * 1000)
+              .toJSON()
+              .substr(0, 19)
+              .replace('T', ' '),
+          })
+          this.$nextTick(() => {
+            this.$refs.content_view.scrollTop =
+              this.$refs.content_view.scrollHeight + 60
+          })
+        }
+      }
+    },
+    // 发送图片消息的上屏
+    sendImgShow(row) {
       if (row.toId == this.selectChat.CustomerId) {
         this.chatRecordList.push({
-          State: 0,
+          State: 1,
           Types: 0,
           Message: row.msg,
           UserName: this.getuserinfo.sendName,
@@ -146,11 +176,11 @@ export default {
         })
       }
     },
-    // 发送图片消息的上屏
-    sendImgShow(row) {
+    // 发送邀请上屏
+    evaluateshow(row) {
       if (row.toId == this.selectChat.CustomerId) {
         this.chatRecordList.push({
-          State: 1,
+          State: 0,
           Types: 0,
           Message: row.msg,
           UserName: this.getuserinfo.sendName,
@@ -206,6 +236,12 @@ export default {
           this.$refs.content_view.scrollTop =
             this.$refs.content_view.scrollHeight + 60
         })
+      }
+    },
+    // 清除会话
+    removeSession(row) {
+      if (row.type) {
+        this.chatRecordList = []
       }
     },
   },

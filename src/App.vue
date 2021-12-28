@@ -16,14 +16,11 @@ export default {
     return {
       custId: '',
       sendTime: '',
-      myPhoneNum: '',
-      logintype: false,
       hearId: '',
+      SignalRfcType: false,
     }
   },
-  created() {
-    this.SignalRfc()
-  },
+  created() {},
   computed: {
     ...mapGetters({
       GetMsgs: 'chat/GetMsgs',
@@ -32,6 +29,7 @@ export default {
       getsendMsg: 'chat/getsendMsg',
       getsendImg: 'chat/getsendImg',
       getselectreaceid: 'chat/getselectreaceid',
+      getsendEvaluate: 'chat/getsendEvaluate',
     }),
   },
   watch: {
@@ -42,41 +40,46 @@ export default {
     getsendImg(msgdata) {
       this.sendImg(msgdata)
     },
+    getsendEvaluate(msgdata) {
+      console.log(msgdata)
+      this.sendEvaluate(msgdata)
+    },
     getuserinfo(user) {
       console.log(user)
       if (user != undefined) {
-        this.logintype = true
+        this.SignalRfcType = true
+        console.log('这是个登录')
+        // this.SignalRfc()
       }
-      // this.addChatUser()
-      this.myPhoneNum = user.Phone
     },
-    logintype(newval) {
+    SignalRfcType(newval) {
       if (newval) {
+        this.SignalRfc()
       }
     },
   },
   mounted() {
-    Notification.requestPermission().then((res) => {
-      console.log(res)
-    })
-    let that = this
-    let beginTime = 0 //开始时间
-    let differTime = 0 //时间差
-    window.onunload = function () {
-      differTime = new Date().getTime() - beginTime
-      if (differTime <= 5) {
-        console.log('这是关闭')
-        logout(that).then((res) => {
-          that.$router.replace('/login')
-        })
-      } else {
-        console.log('这是刷新')
-      }
-    }
-    window.onbeforeunload = function (e) {
-      //  e.returnValue = '关闭提示';
-      beginTime = new Date().getTime()
-    }
+    // Notification.requestPermission().then((res) => {
+    //   console.log(res)
+    // })
+    // let that = this
+    // let beginTime = 0 //开始时间
+    // let differTime = 0 //时间差
+    // window.onunload = function () {
+    //   differTime = new Date().getTime() - beginTime
+    //   if (differTime <= 5) {
+    //     console.log('这是关闭')
+    //     logout(that).then((res) => {
+    //       that.$router.replace('/login')
+    //     })
+    //   } else {
+    //     console.log('这是刷新')
+    //   }
+    // }
+    // window.onbeforeunload = function (e) {
+    //   //  e.returnValue = '关闭提示';
+    //   beginTime = new Date().getTime()
+    // }
   },
   methods: {
     ...mapActions({
@@ -88,6 +91,7 @@ export default {
       setreceiveImgShow: 'chat/setreceiveImgShow',
       setsendshow: 'chat/setsendshow',
       setsendImgshow: 'chat/setsendImgshow',
+      setsendEvaluateshow: 'chat/setsendEvaluateshow',
     }),
 
     // 系统推送
@@ -136,7 +140,6 @@ export default {
     SignalRfc() {
       // 获取客服信息
       GetUserData(this).then((res) => {
-        // this.myPhoneNum = res.Phone
         this.setUserinfo({
           data: res,
         })
@@ -325,6 +328,33 @@ export default {
             _this.sendTime = new Date().getTime() / 1000
           }
         )
+        //显示发送的邀评消息
+        _this.demoChatHubProxy.on(
+          'showAppraiseMsgToPages',
+          function (sendId, toId, receid, msg) {
+            console.log(
+              '发送评价消息--发送发id：' +
+                sendId +
+                ',接收方id' +
+                toId +
+                '，接待id：' +
+                receid +
+                ',消息' +
+                msg
+            )
+            _this.setsendEvaluateshow({
+              data: {
+                sendId: sendId,
+                toId: toId,
+                receid: receid,
+                types: 0,
+                msg: msg,
+              },
+            })
+            // _this.sendShow(sendId, sengName, message, types, state,);
+            _this.sendTime = new Date().getTime() / 1000
+          }
+        )
         connection.error((error) => {
           console.log(error)
           connection
@@ -424,6 +454,27 @@ export default {
         msgdata.linkid,
         msgdata.type,
         msgdata.msg
+      )
+    },
+    // 发送邀评
+    sendEvaluate(msgdata) {
+      console.log(
+        '发送图片--接待id：' +
+          msgdata.linkid +
+          ',发送方id：' +
+          msgdata.sendid +
+          ',接收方id：' +
+          msgdata.toId +
+          ',消息状态：' +
+          msgdata.type
+      )
+
+      this.demoChatHubProxy.invoke(
+        'SendAppraiseMsg',
+        msgdata.sendid,
+        msgdata.toId,
+        msgdata.linkid,
+        msgdata.type
       )
     },
     // 获取问候语

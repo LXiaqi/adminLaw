@@ -7,10 +7,13 @@ const state = {
   userinfo:{}, //用户信息
   sendImg:{}, // 发送图片消息
   sendshow:{}, // 发送消息显示
+  sendEvaluate:{}, //发送邀评消息
   sendImgshow:{}, // 发送图片消息显示
   receiveShow:{}, // 接收私聊消息的展示
+  sendEvaluateshow:{},//评价消息的显示上屏
   receiveImgShow:{}, // 接收图片私聊消息的展示
-  selectreaceid:''
+  selectreaceid:'',
+  overConversation:{}, // 结束会话删除左侧的会话和聊天内容
 }
 const getters = {
   GetMsgs:state => state.greetingsMsg,
@@ -20,11 +23,12 @@ const getters = {
   getsendImg:state => state.sendImg,
   getsendshow:state => state.sendshow,
   getsendImgshow:state => state.sendImgshow,
+  getsendEvaluateshow:state => state.sendEvaluateshow,
   getreceiveShow:state => state.receiveShow,
   getreceiveImgShow:state => state.receiveImgShow,
   getselectreaceid:state => state.selectreaceid,
-  
-  
+  getsendEvaluate:state => state.sendEvaluate,
+  getoverConversation:state => state.overConversation
 }
 
 const actions = {
@@ -58,6 +62,15 @@ const actions = {
     setselectreaceid({ commit }, { data }) {
         commit('setselectreaceid', data);
     },
+    setsendEvaluate({ commit }, { data }) {
+        commit('setsendEvaluate', data);
+    },
+    setsendEvaluateshow({ commit }, { data }) {
+        commit('setsendEvaluateshow', data);
+    },
+    setoverConversation({ commit }, { data }) {
+        commit('setoverConversation', data);
+    },
 }
 
 const mutations = {
@@ -90,6 +103,15 @@ const mutations = {
     },
     setselectreaceid(state, data) {
         state.selectreaceid = data;
+    },
+    setsendEvaluate(state, data) {
+        state.sendEvaluate = data;
+    },
+    setsendEvaluateshow(state, data) {
+        state.sendEvaluateshow = data;
+    },
+    setoverConversation(state, data) {
+        state.overConversation = data;
     },
 }
 

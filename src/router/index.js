@@ -19,7 +19,8 @@ export default new Router({
         {path: '/', name: 'home', component: Home,},
         {path: '/account', name: 'account', component: page('waiter/account'),meta:{title:'客服账号'}},
         {path: '/serviceLogoinList', name: 'serviceLogoinList', component: page('waiter/serviceLogoinList'),meta:{title:'客服坐席'}},
-        {path: '/statements', name: 'statements', component: page('statements'),meta:{title:'语句管理'}},
+        {path: '/statements', name: 'statements', component: page('statements'),meta:{title:'快捷话术'}},
+        {path: '/knowledge', name: 'knowledge', component: page('statements/knowledge'),meta:{title:'知识库'}},
         {path: '/record', name: 'record', component: page('chatadmin/record'),meta:{title:'聊天记录'}},
         {path: '/details', name: 'details', component: page('chatadmin/details'),meta:{title:'接待详情'}},
         {path: '/label', name: 'label', component: page('label'),meta:{title:'标签管理'}},
@@ -27,6 +28,8 @@ export default new Router({
         {path: '/now', name: 'now', component: page('chat/now'),meta:{title:'在线客服'}},
         {path: '/history', name: 'history', component: page('chat/history'),meta:{title:'历史会话'}}, 
         {path: '/newChat', name: 'newChat', component: page('chat/newChat'),meta:{title:'新在线客服'}},
+        {path: '/navigation', name: 'navigation', component: page('navigation'),meta:{title:'导航管理'}},
+
 
       ]
     },
