@@ -102,7 +102,9 @@ export default {
     },
     submit() {
       addNavLevel(this).then((res) => {
-        console.log(res)
+        if (res.success) {
+          this.$emit('closeAdd', false)
+        }
       })
     },
   },
@@ -128,7 +130,7 @@ export default {
   margin: 0 0 0 20px;
 }
 .twobox {
-  height: 500px;
+  height: 50vh;
   overflow: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;

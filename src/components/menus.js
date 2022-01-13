@@ -5,9 +5,9 @@ const menus = [
     icon: 'fa fa-circle-o',
     label: '在线客服',
     submenu: [
-      {id: 'now', name: 'now', label: '在线客服'},
+      {id: 'newChat', name: 'newChat', label: '在线客服'},
+      // {id: 'now', name: 'now', label: '在线客服'},
       {id: 'history', name: 'history', label: '历史会话'},
-      {id: 'newChat', name: 'newChat', label: '新在线客服'},
     ]
   },
   {id: 'navigation', label: '导航管理', path: '/navigation', icon: 'fa fa-dashboard'},

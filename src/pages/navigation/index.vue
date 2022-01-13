@@ -36,17 +36,17 @@
         <el-table-column prop="label" label="一级标签"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="edit(scope.row)"
+            <!-- <el-button type="primary" size="mini" @click="edit(scope.row)"
               >编辑</el-button
-            >
-            <el-button type="danger" size="mini" @click="del(scope.row.value)"
+            > -->
+            <el-button type="danger" size="mini" @click="del(scope.row)"
               >删除</el-button
             >
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <AddNav v-if="addshow" />
+    <AddNav v-if="addshow" @closeAdd="closeAdd" />
   </div>
 </template>
 
@@ -54,7 +54,7 @@
 import bread from '@/components/bread'
 import AddNav from './addNav.vue'
 import untilsTime from '@/utils/Datetime'
-import { getNavLevel } from '@/api/navLevel'
+import { getNavLevel, delNavLevel } from '@/api/navLevel'
 
 export default {
   props: [],
@@ -67,23 +67,49 @@ export default {
     }
   },
   created() {
-    this.info(
-      getNavLevel(this).then((res) => {
-        this.accountData = res.data
-      })
-    )
+    this.info()
   },
   mounted() {},
   methods: {
     // 客服列表的请求和渲染
     info() {
-      labelList(this).then((res) => {
+      getNavLevel(this).then((res) => {
         this.accountData = res.data
       })
     },
     // 添加
     add() {
       this.addshow = true
+    },
+    closeAdd(e) {
+      this.addshow = e
+      this.info()
+    },
+    //删除
+    del(row) {
+      console.log(row)
+      this.$confirm('此操作将永久删除该分类下的所有分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          delNavLevel(this, row.value).then((res) => {
+            if (res.success) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!',
+              })
+              this.info()
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+          })
+        })
     },
   },
 }

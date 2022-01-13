@@ -35,6 +35,14 @@
         <span @click="evaluate()" class="el-icon-bangzhu"></span>
       </el-tooltip>
       <el-tooltip
+        content="快捷话术"
+        placement="bottom"
+        effect="light"
+        class="icon_tip"
+      >
+        <span @click="fastMsg()" class="el-icon-tickets"></span>
+      </el-tooltip>
+      <el-tooltip
         content="结束会话"
         placement="bottom"
         effect="light"
@@ -80,12 +88,26 @@
         <el-button type="primary" @click="onOver()">结束会话</el-button>
       </span>
     </el-dialog>
+    <el-drawer
+      title="快捷话术"
+      :visible.sync="drawer"
+      direction="rtl"
+      size="20%"
+    >
+      <FastMsg
+        v-if="drawer"
+        :id="this.selectConversation.CustomerId"
+        @selectMsg="selectFastMsg"
+      />
+    </el-drawer>
   </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
 import { labelList, commitLab } from '@/api/waiters'
+import FastMsg from './fastMsg.vue'
 export default {
+  components: { FastMsg },
   data() {
     return {
       value: '',
@@ -95,8 +117,10 @@ export default {
       labelType: false,
       options: [],
       labs: [],
+      drawer: false,
     }
   },
+  computed: {},
   mounted() {
     this.info(
       this.$bus.$on('selectChat', (msg) => {
@@ -113,6 +137,9 @@ export default {
       setoverConversation: 'chat/setoverConversation',
     }),
     info() {},
+    selectFastMsg(e) {
+      this.$refs.msgInputContainer.innerHTML = e
+    },
     sendMsg() {
       this.value = this.$refs.msgInputContainer.innerHTML
       if (this.value == '') {
@@ -164,7 +191,7 @@ export default {
       if (!isJPG && !isPng) {
         this.$message.error('上传头像图片只能是 JPG  PNG格式!')
       }
-      return !isJPG && !isPng
+      return
     },
     // 邀请评价
     evaluate() {
@@ -221,6 +248,10 @@ export default {
           }
         }
       )
+    },
+    // 结束会话
+    fastMsg() {
+      this.drawer = true
     },
   },
 }

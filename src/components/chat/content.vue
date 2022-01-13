@@ -80,7 +80,6 @@ export default {
       getadduser: 'chat/getadduser',
       getuserinfo: 'chat/getuserinfo',
       getsendMsg: 'chat/getsendMsg',
-      getselectreaceid: 'chat/getselectreaceid',
       getsendshow: 'chat/getsendshow',
       getsendImgshow: 'chat/getsendImgshow',
       getreceiveShow: 'chat/getreceiveShow',
@@ -258,6 +257,11 @@ export default {
   overflow: hidden;
   overflow-y: scroll;
   padding: 0 20px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 .item_left {
   display: flex;
@@ -320,5 +324,12 @@ export default {
 }
 .img_chat {
   max-width: 300px;
+}
+.tips {
+  text-align: center;
+  color: #778899;
+  font-size: 12px;
+  display: block;
+  cursor: pointer;
 }
 </style>

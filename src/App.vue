@@ -15,9 +15,9 @@ export default {
   data() {
     return {
       custId: '',
-      sendTime: '',
       hearId: '',
       SignalRfcType: false,
+      noReplyList: [],
     }
   },
   created() {},
@@ -28,10 +28,10 @@ export default {
       getuserinfo: 'chat/getuserinfo',
       getsendMsg: 'chat/getsendMsg',
       getsendImg: 'chat/getsendImg',
-      getselectreaceid: 'chat/getselectreaceid',
       getsendEvaluate: 'chat/getsendEvaluate',
     }),
   },
+
   watch: {
     getsendMsg(msgdata) {
       console.log(msgdata)
@@ -56,6 +56,24 @@ export default {
       if (newval) {
         this.SignalRfc()
       }
+    },
+    noReplyList: {
+      deep: true,
+      immediate: true,
+      handler(newList) {
+        console.log(newList)
+        const that = this
+        var t = setInterval(() => {
+          newList.forEach((item) => {
+            if (new Date().getTime() / 1000 - item.time > 50) {
+              dingPush(that, item.name).then(() => {
+                that.noReplyList.splice(item.$index, 1)
+                console.log(that.noReplyList)
+              })
+            }
+          })
+        }, 10000)
+      },
     },
   },
   mounted() {
@@ -100,43 +118,7 @@ export default {
         body: '您有一条新的消息请及时回复！',
       })
     },
-    //钉钉推送 (实时方法)
-    dingtalkPush(sengName, sendid, gettime) {
-      const that = this
-      var t = setInterval(() => {
-        console.log(
-          '当前客服回复（客户id）：' +
-            that.getselectreaceid +
-            '，当前客服回复（时间戳）：' +
-            that.sendTime +
-            ',客服收到消息的客户id：' +
-            sendid +
-            ',客服接收消息时间戳：' +
-            gettime
-        )
-        if (that.getselectreaceid == sendid && that.sendTime > gettime) {
-          if (that.sendTime - gettime < 180) {
-            clearInterval(t)
-          } else {
-            that.CustName = sengName
-            dingPush(that).then((res) => {
-              console.log(res)
-              clearInterval(t)
-            })
-          }
-        } else {
-          if (new Date().getTime() / 1000 - gettime > 180) {
-            that.CustName = sengName
-            dingPush(that).then((res) => {
-              console.log(res)
-              clearInterval(t)
-            })
-          } else {
-            return
-          }
-        }
-      }, 3000)
-    },
+
     SignalRfc() {
       // 获取客服信息
       GetUserData(this).then((res) => {
@@ -145,7 +127,13 @@ export default {
         })
         const _this = this
         var connection = $.hubConnection('')
+        connection.qs = {
+          userid: _this.getuserinfo.sendId,
+          name: _this.getuserinfo.sendName,
+          type: 0,
+        }
         _this.demoChatHubProxy = connection.createHubProxy('chatHub')
+        console.log(_this.demoChatHubProxy)
         // 接收心跳包
         _this.demoChatHubProxy.on('recieveHeartBeat', function (heartbeat) {
           _this.hearId = heartbeat
@@ -213,7 +201,7 @@ export default {
         //接收私聊消息
         _this.demoChatHubProxy.on(
           'remindMsg',
-          function (sendId, toId, receid, type, msg) {
+          function (sendId, toId, receid, type, msg, name) {
             console.log(
               '接收私聊消息--发送发id：' +
                 sendId +
@@ -234,20 +222,42 @@ export default {
                 type: type,
               },
             })
-            // _this.dingtalkPush(sengName, sendId, new Date().getTime() / 1000)
-            // _this.$notify.info({
-            //   title: '提示',
-            //   message: '您有一条新的消息请及时回复',
-            //   position: 'bottom-right',
-            //   duration: 30000,
-            // })
-            // _this.notify()
+            if (_this.noReplyList.length != 0) {
+              let type = true
+              _this.noReplyList.forEach((item) => {
+                if (item.id == sendId) {
+                  type = false
+                  item.time = new Date().getTime() / 1000
+                }
+              })
+              if (type) {
+                _this.noReplyList.push({
+                  name: name,
+                  id: sendId,
+                  time: new Date().getTime() / 1000,
+                })
+              }
+            } else {
+              _this.noReplyList.push({
+                name: name,
+                id: sendId,
+                time: new Date().getTime() / 1000,
+              })
+            }
+            console.log(_this.noReplyList)
+
+            _this.$notify.info({
+              title: '提示',
+              message: '您有一条新的消息请及时回复',
+              duration: 30000,
+            })
+            _this.notify()
           }
         )
         // 显示收到的图片消息
         _this.demoChatHubProxy.on(
           'remindImgMsg',
-          function (sendId, toId, receid, type, msg) {
+          function (sendId, toId, receid, type, msg, name) {
             console.log(
               '接收图片消息--发送发id：' +
                 sendId +
@@ -268,6 +278,34 @@ export default {
                 type: type,
               },
             })
+            if (_this.noReplyList.length != 0) {
+              let type = true
+              _this.noReplyList.forEach((item) => {
+                if (item.id == sendId) {
+                  type = false
+                  item.time = new Date().getTime() / 1000
+                }
+              })
+              if (type) {
+                _this.noReplyList.push({
+                  name: name,
+                  id: sendId,
+                  time: new Date().getTime() / 1000,
+                })
+              }
+            } else {
+              _this.noReplyList.push({
+                name: name,
+                id: sendId,
+                time: new Date().getTime() / 1000,
+              })
+            }
+            _this.$notify.info({
+              title: '提示',
+              message: '您有一条新的消息请及时回复',
+              duration: 30000,
+            })
+            _this.notify()
           }
         )
         //显示发送的私聊消息
@@ -295,8 +333,14 @@ export default {
                 msg: msg,
               },
             })
+            if (_this.noReplyList.length != 0) {
+              _this.noReplyList.forEach((item) => {
+                if (item.id == toId) {
+                  _this.noReplyList.splice(item.$index, 1)
+                }
+              })
+            }
             // _this.sendShow(sendId, sengName, message, types, state,);
-            _this.sendTime = new Date().getTime() / 1000
           }
         )
         //显示发送的图片消息
@@ -324,8 +368,14 @@ export default {
                 msg: msg,
               },
             })
+            if (_this.noReplyList.length != 0) {
+              _this.noReplyList.forEach((item) => {
+                if (item.id == toId) {
+                  _this.noReplyList.splice(item.$index, 1)
+                }
+              })
+            }
             // _this.sendShow(sendId, sengName, message, types, state,);
-            _this.sendTime = new Date().getTime() / 1000
           }
         )
         //显示发送的邀评消息
@@ -352,7 +402,6 @@ export default {
               },
             })
             // _this.sendShow(sendId, sengName, message, types, state,);
-            _this.sendTime = new Date().getTime() / 1000
           }
         )
         connection.error((error) => {

@@ -1,10 +1,7 @@
 <template>
   <div class="chat_content_pc">
     <div class="chat_list">
-      <div class="lable">
-        <div>历史会话</div>
-      </div>
-      <div class="chat_input_pcbox">
+      <!-- <div class="chat_input_pcbox">
         <el-input
           v-model="search_user"
           placeholder="搜索聊天用户"
@@ -16,7 +13,7 @@
           icon="el-icon-search"
           @click="searchBtn()"
         ></el-button>
-      </div>
+      </div> -->
       <!-- 聊天侧边栏 -->
       <div class="chats_content_box">
         <div
@@ -142,6 +139,7 @@ import { chatList, conversation, getCustomerInfo } from '@/api/waiters'
 export default {
   data() {
     return {
+      keymords: '',
       receptionId: '', // 接待id
       chat_list: [], // 当前会话列表
       search_user: '', // 搜索内容
@@ -161,6 +159,10 @@ export default {
       more_type: false, // 加载动画的显示隐藏
       more_show: false, // 加载的隐藏显示（当数据不足分页的时候隐藏加载提示）
       total: 0, // 总页数
+      paging: {
+        page: 1,
+        pageSize: 10,
+      },
     }
   },
   created() {},
@@ -177,23 +179,23 @@ export default {
     info() {
       chatList(this).then((res) => {
         this.chat_list = res.data
-        this.customer_name = this.chat_list[0].CustomerName
-        this.customer_img = this.chat_list[0].HeadImage
-        this.user_id = this.chat_list[0].UserId
-        this.userInformationId = this.chat_list[0].CustomerId
-        this.receptionId = this.chat_list[0].Id
-        this.userinfo()
+        // this.customer_name = this.chat_list[0].CustomerName
+        // this.customer_img = this.chat_list[0].HeadImage
+        // this.user_id = this.chat_list[0].UserId
+        // this.userInformationId = this.chat_list[0].CustomerId
+        // this.receptionId = this.chat_list[0].Id
+        // this.userinfo()
       })
     },
     // 聊天详情的渲染
     userinfo() {
-      conversation(this).then((res) => {
+      conversation(this, this.userInformationId).then((res) => {
         if (res.Total <= 10) {
           this.more_show = false
         } else {
           this.more_show = true
         }
-        this.total = Math.ceil(res.Total / 10)
+        this.total = Math.ceil(res.recordsTotal / 10)
         for (let i = 0; i < res.data.length; i++) {
           if (
             res.data[i].Message.indexOf('https://files.365lawhelp.com') == -1
@@ -219,11 +221,11 @@ export default {
     },
     // 点击加载更多，渲染更多聊天内容
     more() {
-      this.page++
-      console.log(this.total)
-      if (this.page <= this.total) {
+      this.paging.page++
+
+      if (this.paging.page <= this.total) {
         this.more_type = true
-        conversation(this).then((res) => {
+        conversation(this, this.userInformationId).then((res) => {
           for (let i = res.data.length - 1; i >= 0; i--) {
             this.conversationList.unshift(res.data[i])
           }
@@ -233,14 +235,12 @@ export default {
         this.more_type = false
         this.more_show = false
       }
-
-      console.log(this.page)
     },
 
     // 个人信息的展开
     user_information() {
       this.drawer = true
-      getCustomerInfo(this).then((res) => {
+      getCustomerInfo(this, this.userInformationId).then((res) => {
         this.customerData = res.data
       })
     },
@@ -254,7 +254,8 @@ export default {
 }
 .chat_list {
   width: 350px;
-
+  background: #363e47;
+  height: 94.8vh;
   border-right: 1px solid #ebebeb;
 }
 .lable {
@@ -272,17 +273,24 @@ export default {
 }
 /* 聊天列表 */
 #chat_select {
-  background-color: #f5f5f5;
+  background-color: #404953;
 }
 .chats_content_box {
-  height: 745px;
+  height: 84vh;
   overflow: hidden;
   overflow-y: scroll;
+
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 .chat_on_box {
   position: relative;
   width: 340px;
   height: 80px;
+  color: #fff;
 }
 
 .chat_img {
@@ -323,6 +331,7 @@ export default {
   position: absolute;
   left: 80px;
   top: 46px;
+  color: #a5b5c1;
 }
 /* 聊天内容聊天详情 */
 .chat_details {

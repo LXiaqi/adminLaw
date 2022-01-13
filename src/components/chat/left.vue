@@ -33,6 +33,12 @@
             <span class="lastmsg" v-html="item.Message"></span>
             <span class="item_time">{{ item.Time }}</span>
           </div>
+          <div
+            class="count"
+            v-show="item.count != undefined && item.count != 0"
+          >
+            {{ item.count }}
+          </div>
         </div>
       </div>
     </div>
@@ -117,6 +123,7 @@ export default {
     },
     // 会话点击选中
     selectChat(row) {
+      row.count = 0
       this.selectChatData = row
       this.$bus.$emit('selectChat', row)
     },
@@ -134,6 +141,7 @@ export default {
           row.userphoto.indexOf('http') == -1
             ? 'https://images.weserv.nl/?url=https://api.365lawhelp.com/uploads/default_avatar.png'
             : row.userphoto,
+        count: 0,
       }
       this.chat_list.unshift(data)
     },
@@ -148,6 +156,7 @@ export default {
             .substr(0, 19)
             .replace('T', ' ')
           item.Message = row.msg
+          item.count = 0
         }
       })
     },
@@ -160,6 +169,7 @@ export default {
             .substr(0, 19)
             .replace('T', ' ')
           item.Message = '图片'
+          item.count = 0
         }
       })
     },
@@ -172,6 +182,7 @@ export default {
             .substr(0, 19)
             .replace('T', ' ')
           item.Message = row.msg
+          item.count = 0
         }
       })
     },
@@ -184,11 +195,14 @@ export default {
             .substr(0, 19)
             .replace('T', ' ')
           item.Message = '图片'
+          item.count =
+            this.selectChatData.CustomerId == row.sendId ? 0 : item.count + 1
         }
       })
     },
     // 接收消息渲染到侧边栏
     receiveShow(row) {
+      // selectChatData.CustomerId
       this.chat_list.forEach((item) => {
         if (row.sendId == item.CustomerId) {
           item.Time = new Date(+new Date() + 8 * 3600 * 1000)
@@ -196,6 +210,8 @@ export default {
             .substr(0, 19)
             .replace('T', ' ')
           item.Message = row.msg
+          item.count =
+            this.selectChatData.CustomerId == row.sendId ? 0 : item.count + 1
         }
       })
     },
@@ -301,5 +317,18 @@ export default {
 }
 .lastmsg {
   color: #a5b5c1;
+}
+.count {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  background: red;
+  text-align: center;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 20px;
 }
 </style>

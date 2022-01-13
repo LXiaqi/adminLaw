@@ -18,8 +18,8 @@ export async function conversation(that,id) {
     }
 }
 // 选中会话之后查看对方基本信息
-export async function getCustomerInfo(that) {
-    const res = await that.$http.get('/Customer/GetCustomerInfo?CustomerId='+that.userInformationId);
+export async function getCustomerInfo(that,id) {
+    const res = await that.$http.get('/Customer/GetCustomerInfo?CustomerId='+id);
     if(res.success == false) {
         that.$message.error(res.msg);
     }else {
@@ -27,8 +27,8 @@ export async function getCustomerInfo(that) {
     }
 }
 // 获取用户登录信息
-export async function GetUserData(that) {
-    const res = await that.$http.get('/Communication/GetUserData?custId='+that.searchid);
+export async function GetUserData(that,id) {
+    const res = await that.$http.get('/Communication/GetUserData?custId='+id);
     if(res.success == false) {
         that.$message.error(res.msg);
     }else {
@@ -46,8 +46,8 @@ export async function distribution(that) {
     }
 }
 //快捷回复列表
-export async function quickList(that) {
-    const res = await that.$http.get('/Customer/GetCustomerclassByGreet?CustomerId='+that.userInformationId);
+export async function quickList(that,id) {
+    const res = await that.$http.get('/Customer/GetCustomerclassByGreet?CustomerId='+id);
     if(res.success == false) {
         that.$message.error(res.msg);
     }else {

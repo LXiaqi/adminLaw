@@ -16,3 +16,11 @@ export async function getNavLevel(that) {
     }
     return res
 }
+// 一二三级导航的删除
+export async function delNavLevel(that,id) {
+    const res = await that.$http.get('/Answer/Del?Id='+id)
+    if(res.success == false) {
+        that.$message.error(res.msg)
+    }
+    return res
+}
