@@ -76,28 +76,23 @@ export default {
       },
     },
   },
+  beforeCreate() {
+    if (this.$router.path != '/login') {
+      this.$router.replace('/login')
+    }
+  },
   mounted() {
-    // Notification.requestPermission().then((res) => {
-    //   console.log(res)
-    // })
-    // let that = this
-    // let beginTime = 0 //开始时间
-    // let differTime = 0 //时间差
-    // window.onunload = function () {
-    //   differTime = new Date().getTime() - beginTime
-    //   if (differTime <= 5) {
-    //     console.log('这是关闭')
-    //     logout(that).then((res) => {
-    //       that.$router.replace('/login')
-    //     })
-    //   } else {
-    //     console.log('这是刷新')
-    //   }
-    // }
-    // window.onbeforeunload = function (e) {
-    //   //  e.returnValue = '关闭提示';
-    //   beginTime = new Date().getTime()
-    // }
+    window.onunload = function () {
+      logout(this).then((res) => {
+        this.$router.replace('/login')
+      })
+    }
+    window.onbeforeunload = function (e) {
+      //  e.returnValue = '关闭提示';
+      logout(this).then((res) => {
+        this.$router.replace('/login')
+      })
+    }
   },
   methods: {
     ...mapActions({
@@ -130,7 +125,6 @@ export default {
         connection.qs = {
           userid: _this.getuserinfo.sendId,
           name: _this.getuserinfo.sendName,
-          type: 0,
         }
         _this.demoChatHubProxy = connection.createHubProxy('chatHub')
         console.log(_this.demoChatHubProxy)
