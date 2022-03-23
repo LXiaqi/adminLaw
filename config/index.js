@@ -12,7 +12,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: "192.168.6.34", // can be overwritten by process.env.HOST
+    host: "192.168.6.153", // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -20,8 +20,8 @@ module.exports = {
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
     proxyTable: {
       "/": {
-        // target: 'https://online.365lawhelp.com',
-        target: "https://online.365lawhelp.com/",
+        target: "http://192.168.6.126:8081",
+        // target: "https://online.365lawhelp.com/",
 
         changeOrigin: true
       }

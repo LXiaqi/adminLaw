@@ -67,6 +67,7 @@ export default {
         password: this.password,
       }).then((res) => {
         adminLogin(that).then((res) => {
+          sessionStorage.setItem('userType', res.data.Type)
           // 获取用户信息
           GetUserData(this).then((ret) => {
             that.setUserinfo({
